@@ -58,7 +58,8 @@
 <li>  Dictionary：用于存储RADIUS协议中的属性和属性值含义的信息。</li>
 </ul>
 </blockquote>
-<h2 id="2-3-RADIUS报文介绍"><a href="#2-3-RADIUS报文介绍" class="headerlink" title="2.3 RADIUS报文介绍"></a>2.3 RADIUS报文介绍</h2><h3 id="2-3-1-RADIUS认证报文类型"><a href="#2-3-1-RADIUS认证报文类型" class="headerlink" title="2.3.1 RADIUS认证报文类型"></a>2.3.1 RADIUS认证报文类型</h3><table>
+<h2 id="2-3-RADIUS报文介绍"><a href="#2-3-RADIUS报文介绍" class="headerlink" title="2.3 RADIUS报文介绍"></a>2.3 RADIUS报文介绍</h2><h3 id="2-3-1-RADIUS认证报文类型"><a href="#2-3-1-RADIUS认证报文类型" class="headerlink" title="2.3.1 RADIUS认证报文类型"></a>2.3.1 RADIUS认证报文类型</h3><style> table th: first-of-type { width: 200px; } </style>
+<table>
 <thead>
 <tr>
 <th>报文名</th>
