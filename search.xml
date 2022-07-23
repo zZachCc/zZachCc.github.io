@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>NAC-802.1/MAC/Portal</title>
+    <url>/2022/07/23/NAC-802-1-MAC-Portal/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>AAA之Radius</title>
     <url>/2022/07/23/AAA%E6%A6%82%E8%BF%B0/</url>
     <content><![CDATA[<h1 id="1-AAA"><a href="#1-AAA" class="headerlink" title="1. AAA"></a>1. AAA</h1><h2 id="1-1-什么是AAA？"><a href="#1-1-什么是AAA？" class="headerlink" title="1.1  什么是AAA？"></a>1.1  什么是AAA？</h2><p>AAA是Authentication(认证), Authorization(授权), Accounting(计费)的简称</p>
