@@ -3,7 +3,200 @@
   <entry>
     <title>NAC-802.1/MAC/Portal</title>
     <url>/2022/07/23/NAC-802-1-MAC-Portal/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="1-NAC"><a href="#1-NAC" class="headerlink" title="1. NAC"></a>1. NAC</h1><p><strong>什么是NAC？</strong></p>
+<blockquote>
+<p>NAC（Network Access Control）称为<strong>网络接入控制</strong>，通过对接入网络的客户端和用户的认证保证网络的安全，是一种“端到端”的安全技术。</p>
+</blockquote>
+<p><strong>NAC场景的基本结构</strong></p>
+<blockquote>
+<p>终端(接入者) —– NAS(接入设备.eg. switch/AP) —– AAA服务器</p>
+</blockquote>
+<p><strong>NAC和AAA是什么关系？</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left">NAC</th>
+<th align="left">AAA</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">用于终端和接入设备之间的交互</td>
+<td align="left">用于接入设备与认证服务器之间的交互</td>
+</tr>
+<tr>
+<td align="left">终端通过NAC机制传递用户名/密码给接入设备</td>
+<td align="left">接入设备通过AAA来认证用户</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p>Cc白话：NAC用来收集终端用户的信息，AAA用来认证、授权这个用户</p>
+</blockquote>
+<p><strong>NAC的三种方式</strong></p>
+<table>
+<thead>
+<tr>
+<th align="left"><strong>对比项</strong></th>
+<th align="left"><strong>802.1X认证</strong></th>
+<th align="left"><strong>MAC认证</strong></th>
+<th align="left"><strong>Portal认证</strong></th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><div style="width: 50pt">终端需求</div></td>
+<td align="left">终端需安装客户端</td>
+<td align="left">终端无需安装客户端</td>
+<td align="left">终端无需安装客户端</td>
+</tr>
+<tr>
+<td align="left">适用场景</td>
+<td align="left">新建网络、用户固定、信息安全要求严格的场景</td>
+<td align="left">哑终端(打印机、IP电话等)需要接入认证的场景</td>
+<td align="left">用户分散、用户流动性大的场景</td>
+</tr>
+</tbody></table>
+<hr>
+<h1 id="2-802-1X认证"><a href="#2-802-1X认证" class="headerlink" title="2. 802.1X认证"></a>2. 802.1X认证</h1><h2 id="2-1-802-1X认证简介"><a href="#2-1-802-1X认证简介" class="headerlink" title="2.1 802.1X认证简介"></a>2.1 802.1X认证简介</h2><p><strong>定义</strong></p>
+<blockquote>
+<p>802.1X协议是一种“基于端口的网络接入控制协议”，所以802.1X是在“接口”上配置生效的(物理接口/虚拟接口)</p>
+</blockquote>
+<p><strong>802.1X认证场景的基本结构</strong></p>
+<blockquote>
+<p>和基本NAC的场景结构一致: 客户端/接入设备/认证服务器<br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724205635.png" alt="image1"></p>
+<ul>
+<li>客户端：是指终端设备上的支持的802.1X软件，用户可以通过启动客户端软件发起802.1X认证</li>
+<li>接入设备：通常为支持802.1X协议的网络设备，它为客户端提供接入局域网的端口，该端口可以是物理端口，也可以是逻辑端口</li>
+<li>认证服务器：用于实现对用户进行认证、授权和计费，通常为RADIUS服务器</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="2-2-802-1X认证所需的协议"><a href="#2-2-802-1X认证所需的协议" class="headerlink" title="2.2 802.1X认证所需的协议"></a>2.2 802.1X认证所需的协议</h2><p>802.1X认证需要在客户端与接入设备之间交互用户的信息，这些信息是通过什么协议交互的？</p>
+<blockquote>
+<p>EAP (Extensible Authentication Protocol)</p>
+</blockquote>
+<p>EAP早期是为PPP协议设计的一款协议，无法在Ethernet上传输，怎么办？</p>
+<blockquote>
+<p>EAPoL(EAP over LANs)， 在EAP报文外面再封装一层EAPoL，EAPoL外面直接封装Ethernet帧头，不需要封装IP协议，因为802.1X协议是一个纯二层协议</p>
+</blockquote>
+<h3 id="2-2-1-EAP报文结构"><a href="#2-2-1-EAP报文结构" class="headerlink" title="2.2.1 EAP报文结构"></a>2.2.1 EAP报文结构</h3><p><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724210811.png" alt="image2"></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Code</td>
+<td align="left">表示EAP数据包的类型: <br> 1:Request <br> 2:Response <br> 3:Success <br> 4:Failure</td>
+</tr>
+<tr>
+<td align="left">ID</td>
+<td align="left">用于对应一个Request和它的Response</td>
+</tr>
+<tr>
+<td align="left">Length</td>
+<td align="left">表示EAP数据包的长度，包括Code、ID、Length以及Data各字段的总长度</td>
+</tr>
+<tr>
+<td align="left">Data</td>
+<td align="left">Data字段的格式由Code的值来决定<br>- 当Code字段为1或2时，EAP为Request和Response报文，Data包含Type, Type Data两个字段。Type表示Request/Response的类型；Type Data为类型所包含的内容<br>- 当Code取值为3或者4时，EAP为Success和Failure报文，没有Data字段。</td>
+</tr>
+</tbody></table>
+<p>Code为1时，报文类型是EAP-Request；Code为2时，报文类型是EAP-Response。这两类<br>报文是有负载的，也就是Data字段，Data字段中的内容如下：</p>
+<table>
+<thead>
+<tr>
+<th align="left">Type字段值</th>
+<th align="left">类型</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><div style="width: 50pt">1</div></td>
+<td align="left"><div style="width: 60pt">Identity</div></td>
+<td align="left"><div style="width: 300pt">携带用户的用户名信息</div></td>
+</tr>
+<tr>
+<td align="left">2</td>
+<td align="left">Notification</td>
+<td align="left">非必须的通知消息，传送一些警告消息，例如密码已过期、账号被锁等。</td>
+</tr>
+<tr>
+<td align="left">3</td>
+<td align="left">NAK</td>
+<td align="left">仅用于Response帧，表示否定确认。例如终端使用了接入设备不支持的认证方法发起请求，客户端可利用Response/NAK报文以告知终端其支持的认证方法</td>
+</tr>
+<tr>
+<td align="left">4</td>
+<td align="left">MD5-Challenge</td>
+<td align="left">携带用户的密码信息(MD5哈希加密)</td>
+</tr>
+</tbody></table>
+<h3 id="2-2-2-EAPoL"><a href="#2-2-2-EAPoL" class="headerlink" title="2.2.2 EAPoL"></a>2.2.2 EAPoL</h3><p>EAPoL是802.1X协议定义的一种报文封装格式，使EAP可以在LAN上进行传输。</p>
+<p><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724214829.png" alt="image3"></p>
+<table>
+<thead>
+<tr>
+<th align="left">字段</th>
+<th align="left">含义</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">PAE Ethernet Type</td>
+<td align="left">表示协议类型，值为0x888E。</td>
+</tr>
+<tr>
+<td align="left">Protocol Version</td>
+<td align="left">表示EAPoL帧的发送方所支持的802.1X协议版本号</td>
+</tr>
+<tr>
+<td align="left">Type</td>
+<td align="left">表示EAPoL数据帧类型:<br>00：EAP-Packet，用于封装EAP报文(EAP在负载里面)<br>01：EAPoL-Start，用于用户主动发起认证过程<br>02：EAPoL-Logoff，用于用户主动发起下线请求<br>03：EAPoL-Key，密钥信息报文。</td>
+</tr>
+<tr>
+<td align="left">Length</td>
+<td align="left">表示负载的长度，也就是Packet Body字段的长度，EAPoL-Start和EAPoL-Logoff报文的Length值都为0</td>
+</tr>
+<tr>
+<td align="left">Packet Body</td>
+<td align="left">当EAPoL type为00时，EAP报文就封装在这里</td>
+</tr>
+</tbody></table>
+<h2 id="2-3-802-1X认证流程"><a href="#2-3-802-1X认证流程" class="headerlink" title="2.3 802.1X认证流程"></a>2.3 802.1X认证流程</h2><p><strong>802.1X怎么触发？</strong></p>
+<blockquote>
+<p>802.1X认证有以下触发方式：</p>
+<ul>
+<li>  终端主动发送EAPoL-Start报文给接入设备，触发认证。</li>
+<li>  终端关联至接入设备时，接入设备触发认证。(唯一的差别就是，没有下述流程中的第一步)</li>
+</ul>
+</blockquote>
+<p><strong>802.1X认证方式</strong></p>
+<blockquote>
+<p><strong>1. 中继方式</strong></p>
+<ul>
+<li>中继方式中，接入设备将EAP-Response/Identity和EAP-Response/MD5Challenge这两个报文直接通过Radius的Access-Request报文透传给Radius服务器</li>
+<li>Radius服务器以EAP的方式验证用户信息</li>
+</ul>
+</blockquote>
+<blockquote>
+<p><strong>2. 终结方式</strong></p>
+<ul>
+<li>终结方式中，接入设备将EAP-Response/Identity和EAP-Response/MD5Challenge这两个报文中的用户信息提取出来，再用Radius报文把用户信息封装到Access-Request报文发送给Radius服务器</li>
+<li>Radius服务器以PAP或CHAP的方式验证用户信息</li>
+</ul>
+</blockquote>
+<p><strong>802.1X认证流程</strong></p>
+<blockquote>
+<p><strong>EAP中继方式</strong><br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724223847.png" alt="image4"><br>(1) 终端向接人设备发送一个EAPoL-Start报文，开始802.1x认证接入；<br>(2) 接入设备向终端发送EAP-Request/Identity 报文，要求客户端将用户名发过来；<br>(3) 终端回应一个EAP-Response/Identity 给接入设备，其中包括用户名；<br>(4) 接入设备将EAP-Response/Identity 报文封装到RADIUS的Access-Request 报文中，发送给认证服务器；<br>(5) 认证服务器产生一个EAP-Request/MD5-Challenge报文，封装到RADIUS的Access-Challenge 报文中，发送给接入设备；<br>(6) 接入设备拆掉Radius封装，把EAP-Request/MD5-Challenge 发送给终端，要求终端进行认证；<br>(7) 终端收到EAP-Request/MD5-Challenge报文后，对“用户密码+Challenge”做MD5算法生成Challenged-Password，将Challenged-Password封装到EAP-Response/MD5-Challenge 回应给接入设备；<br>(8) 接入设备将EAP-Response/MD5-Challenge封装到Radius的Access-Request 报文中，发送给认证服务器；<br>(9) 认证服务器现在拥有了终端的用户名以及密码，采用EAP的方式认证用户；<br>(10) 认证服务器生成EAP-Success报文，封装到Radius的Access-Accept 报文中，发送给接入设备；<br>(11) 接入设备拆掉Radius封装，把EAP-Success报文发送给终端，并将端口改为授权状态。<br>(12) 终端可以发送EAPoL-Logoff报文给接入设备，主动要求下线；<br>(13) 接入设备把端口状态从授权状态改变成未授权状态，并向客户端发送EAP-Failure报文。</p>
+</blockquote>
+<blockquote>
+<p><strong>EAP终结方式</strong><br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724224025.png" alt="image6"><br>(1) 终端向接人设备发送一个EAPoL-Start报文，开始802.1x认证接入；<br>(2) 接入设备向终端发送EAP-Request/Identity 报文，要求客户端将用户名发过来；<br>(3) 终端回应一个EAP-Response/Identity 给接入设备，其中包括用户名；<br>(4) 接入设备产生一个EAP-Request/MD5-Challenge报文，发送给终端；<br>(5) 终端收到EAP-Request/MD5-Challenge报文后，对“用户密码+Challenge”做MD5算法生成Challenged-Password，将Challenged-Password封装到EAP-Response/MD5-Challenge 回应给接入设备；<br>(6) 接入设备提取出用户名和密码，将其封装到Radius的Access-Request 报文中(PAP或CHAP方式)，发送给认证服务器；<br>(7) 认证服务器现在拥有了终端的用户名以及密码，采用PAP或CHAP的方式认证用户，如成功，认证服务器生成EAP-Success报文，封装到Radius的Access-Accept 报文中，发送给接入设备；<br>(8) 接入设备拆掉Radius封装，把EAP-Success报文发送给终端，并将端口改为授权状态。<br>(9) 终端可以发送EAPoL-Logoff报文给接入设备，主动要求下线；<br>(10) 接入设备把端口状态从授权状态改变成未授权状态，并向客户端发送EAP-Failure报文。</p>
+</blockquote>
+<hr>
+<h1 id="3-MAC认证"><a href="#3-MAC认证" class="headerlink" title="3. MAC认证"></a>3. MAC认证</h1><h1 id="4-MAC认证"><a href="#4-MAC认证" class="headerlink" title="4. MAC认证"></a>4. MAC认证</h1>]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
   </entry>
   <entry>
     <title>AAA之Radius</title>
