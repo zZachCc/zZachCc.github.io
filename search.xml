@@ -579,4 +579,119 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>WLAN安全策略</title>
+    <url>/2022/07/24/WLAN%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/</url>
+    <content><![CDATA[<p>WLAN的安全策略，是专门根据802.1协议家族定制的，每种安全策略体现了<strong>一整套安全机制</strong>，包括 </p>
+<blockquote>
+<ol>
+<li>无线链路建立时的<strong>链路认证</strong>方式</li>
+<li>无线用户上线时的<strong>用户接入认证</strong>方式和 </li>
+<li>无线用户传输数据业务时的<strong>数据加密</strong>方式。</li>
+</ol>
+</blockquote>
+<h3 id="1-WEP-基本不用了"><a href="#1-WEP-基本不用了" class="headerlink" title="1. WEP (基本不用了)"></a>1. WEP (基本不用了)</h3><ol>
+<li><p>链路认证方式：</p>
+<ul>
+<li>如果选择开放系统认证方式，链路认证过程不需要WEP加密</li>
+<li>如果选择共享密钥认证方式，链路认证过程中完成了密钥协商</li>
+</ul>
+</li>
+<li><p>用户接入认证方式：<br> WEP没有用户认证方式</p>
+</li>
+<li><p>业务流量加密方式：<br> WEP-40<br> WEP-104<br> WEP-128</p>
+</li>
+</ol>
+<hr>
+<h3 id="2-WPA-WPA2"><a href="#2-WPA-WPA2" class="headerlink" title="2. WPA/WPA2"></a>2. WPA/WPA2</h3><ol>
+<li>链路认证方式：</li>
+</ol>
+<ul>
+<li>WPA/WPA2仅支持开放式系统认证</li>
+<li>WPA/WPA2不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li> 用户接入认证方式：  </li>
+</ol>
+<ul>
+<li>WPA/WPA2企业版：<ul>
+<li>802.1X</li>
+</ul>
+</li>
+<li>WPA/WPA2个人版：<ul>
+<li>PSK</li>
+<li>PPSK</li>
+<li>DPSK</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>由于这个密钥仅仅用于认证过程，而不用于加密过程; 因此不会导致WEP中，不同的用户都采用相同的WEP密钥进行业务流量加密的问题</p>
+</blockquote>
+<blockquote>
+<p>PSK使用的密钥类型有两类:<br>HEX：该输入项长度范围是8～32位16进制数且长度必须为偶数。<br>PASS-PHRASE：该输入项范围是8～64个字符。</p>
+</blockquote>
+<ol start="3">
+<li><p>数据加密</p>
+<p> WPA/WPA2支持TKIP和CCMP两种加密算法</p>
+</li>
+</ol>
+<ul>
+<li>TKIP加密算法: 区别于WEP共用一个共享密钥，TKIP采用一套动态密钥协商和管理方法，每个无线用户都会动态地协商一套密钥，保证了每个用户使用独立的密钥</li>
+<li>CCMP加密算法(基于AES): 区别于WEP和TKIP采用的流密码机制，CCMP采用了以高级加密标准<strong>AES</strong>（Advanced Encryption Standard）的块密码为基础的安全协议</li>
+</ul>
+<blockquote>
+<p>WPA和WPA2都可以使用<br>802.1X的接入认证<br>TKIP或CCMP的加密算法<br>他们之间的不同主要表现在协议报文格式上</p>
+</blockquote>
+<hr>
+<h3 id="3-WPA3"><a href="#3-WPA3" class="headerlink" title="3. WPA3"></a>3. WPA3</h3><ol>
+<li> 链路认证方式：</li>
+</ol>
+<ul>
+<li>  WPA3仅支持开放式系统认证（WAP3在开放式系统认证的基础上做了升级，提出了OWE认证）</li>
+<li>  WPA3不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li>用户接入认证方式：</li>
+</ol>
+<ul>
+<li>WPA3企业版：<ul>
+<li>  802.1X</li>
+</ul>
+</li>
+<li>WPA3个人版：<ul>
+<li>  SAE (取代了WPA2中的PSK)</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><p>数据加密</p>
+<ul>
+<li>WPA3仅支持AES加密算法</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-WPI"><a href="#4-WPI" class="headerlink" title="4. WPI"></a>4. WPI</h3><ol>
+<li> 链路认证方式：</li>
+</ol>
+<ul>
+<li>  WPA3仅支持开放式系统认证</li>
+<li>  WPA3不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li>用户接入认证方式：</li>
+</ol>
+<ul>
+<li> PSK</li>
+<li>证书认证</li>
+</ul>
+<ol start="3">
+<li>数据加密<br>通过密钥协商阶段产生的对称加密密钥，对业务数据进行加密<br>对称加密算法为：国密办审判的分组加密算法(SMS4)<br>WPI支持对称加密的 密钥更新</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>

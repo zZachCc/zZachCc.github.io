@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述：WLAN的安全策略是什么意思？WAP&#x2F;WAP2&#x2F;WAP3是什么？">
+<meta property="og:type" content="article">
+<meta property="og:title" content="WLAN安全策略">
+<meta property="og:url" content="http://example.com/2022/07/24/WLAN%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/index.html">
+<meta property="og:site_name" content="Cc&#39;s Blog">
+<meta property="og:description" content="概述：WLAN的安全策略是什么意思？WAP&#x2F;WAP2&#x2F;WAP3是什么？">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2022-07-24T15:14:54.000Z">
+<meta property="article:modified_time" content="2022-07-24T15:18:27.233Z">
+<meta property="article:author" content="Cheng Chen">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="http://example.com/2022/07/24/WLAN%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/07/24/WLAN%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/","path":"2022/07/24/WLAN安全策略/","title":"WLAN安全策略"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>WLAN安全策略 | Cc's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay Simple</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-WEP-%E5%9F%BA%E6%9C%AC%E4%B8%8D%E7%94%A8%E4%BA%86"><span class="nav-text">1. WEP (基本不用了)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-WPA-WPA2"><span class="nav-text">2. WPA&#x2F;WPA2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-WPA3"><span class="nav-text">3. WPA3</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-WPI"><span class="nav-text">4. WPI</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheng Chen"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Cheng Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">4</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/24/WLAN%E5%AE%89%E5%85%A8%E7%AD%96%E7%95%A5/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Cheng Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cc's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="WLAN安全策略 | Cc's Blog">
+      <meta itemprop="description" content="概述：WLAN的安全策略是什么意思？WAP/WAP2/WAP3是什么？">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          WLAN安全策略
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-07-24 23:14:54 / Modified: 23:18:27" itemprop="dateCreated datePublished" datetime="2022-07-24T23:14:54+08:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Networking/" itemprop="url" rel="index"><span itemprop="name">Networking</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">概述：WLAN的安全策略是什么意思？WAP/WAP2/WAP3是什么？</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <p>WLAN的安全策略，是专门根据802.1协议家族定制的，每种安全策略体现了<strong>一整套安全机制</strong>，包括 </p>
+<blockquote>
+<ol>
+<li>无线链路建立时的<strong>链路认证</strong>方式</li>
+<li>无线用户上线时的<strong>用户接入认证</strong>方式和 </li>
+<li>无线用户传输数据业务时的<strong>数据加密</strong>方式。</li>
+</ol>
+</blockquote>
+<h3 id="1-WEP-基本不用了"><a href="#1-WEP-基本不用了" class="headerlink" title="1. WEP (基本不用了)"></a>1. WEP (基本不用了)</h3><ol>
+<li><p>链路认证方式：</p>
+<ul>
+<li>如果选择开放系统认证方式，链路认证过程不需要WEP加密</li>
+<li>如果选择共享密钥认证方式，链路认证过程中完成了密钥协商</li>
+</ul>
+</li>
+<li><p>用户接入认证方式：<br> WEP没有用户认证方式</p>
+</li>
+<li><p>业务流量加密方式：<br> WEP-40<br> WEP-104<br> WEP-128</p>
+</li>
+</ol>
+<hr>
+<h3 id="2-WPA-WPA2"><a href="#2-WPA-WPA2" class="headerlink" title="2. WPA/WPA2"></a>2. WPA/WPA2</h3><ol>
+<li>链路认证方式：</li>
+</ol>
+<ul>
+<li>WPA/WPA2仅支持开放式系统认证</li>
+<li>WPA/WPA2不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li> 用户接入认证方式：  </li>
+</ol>
+<ul>
+<li>WPA/WPA2企业版：<ul>
+<li>802.1X</li>
+</ul>
+</li>
+<li>WPA/WPA2个人版：<ul>
+<li>PSK</li>
+<li>PPSK</li>
+<li>DPSK</li>
+</ul>
+</li>
+</ul>
+<blockquote>
+<p>由于这个密钥仅仅用于认证过程，而不用于加密过程; 因此不会导致WEP中，不同的用户都采用相同的WEP密钥进行业务流量加密的问题</p>
+</blockquote>
+<blockquote>
+<p>PSK使用的密钥类型有两类:<br>HEX：该输入项长度范围是8～32位16进制数且长度必须为偶数。<br>PASS-PHRASE：该输入项范围是8～64个字符。</p>
+</blockquote>
+<ol start="3">
+<li><p>数据加密</p>
+<p> WPA/WPA2支持TKIP和CCMP两种加密算法</p>
+</li>
+</ol>
+<ul>
+<li>TKIP加密算法: 区别于WEP共用一个共享密钥，TKIP采用一套动态密钥协商和管理方法，每个无线用户都会动态地协商一套密钥，保证了每个用户使用独立的密钥</li>
+<li>CCMP加密算法(基于AES): 区别于WEP和TKIP采用的流密码机制，CCMP采用了以高级加密标准<strong>AES</strong>（Advanced Encryption Standard）的块密码为基础的安全协议</li>
+</ul>
+<blockquote>
+<p>WPA和WPA2都可以使用<br>802.1X的接入认证<br>TKIP或CCMP的加密算法<br>他们之间的不同主要表现在协议报文格式上</p>
+</blockquote>
+<hr>
+<h3 id="3-WPA3"><a href="#3-WPA3" class="headerlink" title="3. WPA3"></a>3. WPA3</h3><ol>
+<li> 链路认证方式：</li>
+</ol>
+<ul>
+<li>  WPA3仅支持开放式系统认证（WAP3在开放式系统认证的基础上做了升级，提出了OWE认证）</li>
+<li>  WPA3不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li>用户接入认证方式：</li>
+</ol>
+<ul>
+<li>WPA3企业版：<ul>
+<li>  802.1X</li>
+</ul>
+</li>
+<li>WPA3个人版：<ul>
+<li>  SAE (取代了WPA2中的PSK)</li>
+</ul>
+</li>
+</ul>
+<ol start="3">
+<li><p>数据加密</p>
+<ul>
+<li>WPA3仅支持AES加密算法</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="4-WPI"><a href="#4-WPI" class="headerlink" title="4. WPI"></a>4. WPI</h3><ol>
+<li> 链路认证方式：</li>
+</ol>
+<ul>
+<li>  WPA3仅支持开放式系统认证</li>
+<li>  WPA3不支持共享密钥认证</li>
+</ul>
+<ol start="2">
+<li>用户接入认证方式：</li>
+</ol>
+<ul>
+<li> PSK</li>
+<li>证书认证</li>
+</ul>
+<ol start="3">
+<li>数据加密<br>通过密钥协商阶段产生的对称加密密钥，对业务数据进行加密<br>对称加密算法为：国密办审判的分组加密算法(SMS4)<br>WPI支持对称加密的 密钥更新</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/" rel="prev" title="5G专网概述">
+                  <i class="fa fa-chevron-left"></i> 5G专网概述
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheng Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
