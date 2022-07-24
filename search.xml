@@ -58,8 +58,7 @@
 <li>  Dictionary：用于存储RADIUS协议中的属性和属性值含义的信息。</li>
 </ul>
 </blockquote>
-<h2 id="2-3-RADIUS报文介绍"><a href="#2-3-RADIUS报文介绍" class="headerlink" title="2.3 RADIUS报文介绍"></a>2.3 RADIUS报文介绍</h2><h3 id="2-3-1-RADIUS认证报文类型"><a href="#2-3-1-RADIUS认证报文类型" class="headerlink" title="2.3.1 RADIUS认证报文类型"></a>2.3.1 RADIUS认证报文类型</h3><style> table th: first-of-type { width: 200px; } </style>
-<table>
+<h2 id="2-3-RADIUS报文介绍"><a href="#2-3-RADIUS报文介绍" class="headerlink" title="2.3 RADIUS报文介绍"></a>2.3 RADIUS报文介绍</h2><h3 id="2-3-1-RADIUS认证报文类型"><a href="#2-3-1-RADIUS认证报文类型" class="headerlink" title="2.3.1 RADIUS认证报文类型"></a>2.3.1 RADIUS认证报文类型</h3><table>
 <thead>
 <tr>
 <th>报文名</th>
@@ -68,23 +67,23 @@
 </tr>
 </thead>
 <tbody><tr>
-<td>Access-Request</td>
-<td>请求报文</td>
+<td><div style="width: 110pt">Access-Request</div></td>
+<td><div style="width: 60pt">请求报文</div></td>
 <td>认证请求报文，是RADIUS报文交互过程中的第一个报文，用来携带用户的认证信息（例如：用户名、密码等）。认证请求报文由RADIUS客户端发送给RADIUS服务器，RADIUS服务器根据该报文中携带的用户信息判断是否允许接入。</td>
 </tr>
 <tr>
 <td>Access-Accept</td>
-<td>相应报文</td>
+<td>响应报文</td>
 <td>认证接受报文，是RADIUS服务器对RADIUS客户端发送的Access-Request报文的接受响应报文。如果Access-Request报文中的所有属性都可以接受（即认证通过），则发送该类型报文。RADIUS客户端收到此报文后，用户才能认证通过并被赋予相应的权限。</td>
 </tr>
 <tr>
 <td>Access-Reject</td>
-<td>相应报文</td>
+<td>响应报文</td>
 <td>认证拒绝报文，是RADIUS服务器对RADIUS客户端的Access-Request报文的拒绝响应报文。如果Access-Request报文中的任何一个属性不可接受（即认证失败），则RADIUS服务器返回Access-Reject报文，用户认证失败。</td>
 </tr>
 <tr>
 <td>Access-Challenge</td>
-<td>相应报文</td>
+<td>响应报文</td>
 <td>认证挑战报文。EAP中继认证时，RADIUS服务器接收到Access-Request报文中携带的用户名信息后，会随机生成一个MD5挑战字，同时将此挑战字通过Access-Challenge报文发送给用户。用户使用该挑战字对用户密码进行加密处理后，将新的用户密码信息通过Access-Request报文发送给RADIUS服务器。RADIUS服务器将收到的已加密的密码信息和本地经过加密运算后的密码信息进行对比，如果相同，则该用户为合法用户。</td>
 </tr>
 </tbody></table>
@@ -157,6 +156,229 @@
 -   如果用户未下线，设备给RADIUS服务器回应DM-NAK报文。
 </code></pre>
 </li>
+</ol>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
+  <entry>
+    <title>5G专网概述</title>
+    <url>/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/</url>
+    <content><![CDATA[<h2 id="1-移动网络概述"><a href="#1-移动网络概述" class="headerlink" title="1. 移动网络概述"></a>1. 移动网络概述</h2><p>不管是2G、3G、4G还是5G，移动通信网络主要由两个子系统组成</p>
+<ol>
+<li> 无线接入网（RAN）</li>
+<li> 移动核心网</li>
+</ol>
+<h3 id="1-1-无线接入网-RAN"><a href="#1-1-无线接入网-RAN" class="headerlink" title="1.1 无线接入网(RAN)"></a>1.1 无线接入网(RAN)</h3><ul>
+<li><p>  RAN负责管理无线部分，以高效利用频谱资源，并满足用户的服务质量需求</p>
+</li>
+<li><p>RAN的关键组件叫基站，不同时代的基站的别名不同</p>
+<table>
+<thead>
+<tr>
+<th>移动网络Generation</th>
+<th>基站别名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 150pt">2G</div></td>
+<td><div style="width: 150pt">BTS</div></td>
+</tr>
+<tr>
+<td>3G</td>
+<td>NodeB</td>
+</tr>
+<tr>
+<td>4G</td>
+<td>eNB</td>
+</tr>
+<tr>
+<td>5G</td>
+<td>gNB</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="1-2-移动核心网"><a href="#1-2-移动核心网" class="headerlink" title="1.2 移动核心网"></a>1.2 移动核心网</h3><p>在移动网络的核心网中，可以分成两个网络面：==控制面和用户面==<br><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717205649.png" alt="image1"></p>
+<table>
+<thead>
+<tr>
+<th>核心网网络面</th>
+<th>网络面作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 150pt">控制面</div></td>
+<td><div style="width: 150pt">承载信令或控制消息</div></td>
+</tr>
+<tr>
+<td>用户面(也叫数据面或转发面)</td>
+<td>承载数据流量</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>移动核心网的能力</strong></p>
+<ol>
+<li><p>移动核心网在RAN和Internet之间架起了一道桥梁，为数据和语音服务提供Internet连接</p>
+</li>
+<li><p> 确保连接的QoS质量要求</p>
+</li>
+<li><p> 管理用户移动性，以确保服务不中断</p>
+</li>
+<li><p> 计费</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p><strong>终端用户通过移动网络建立会话的过程概述</strong><br>终端上网时，基站会为终端建立无线信道连接。这个过程主要分为控制面连接和用户面连接两个阶段：<br>    1.  首先，基站会在手机和核心网的控制面之间建立“控制面”连接，并在两者之间转发信令消息，这些消息包括手机身份验证、注册、移动性管理等。<br>    2.  然后，基站会在手机和核心网的用户面之间建立“用户面”连接，转发用户数据流量</p>
+</blockquote>
+<hr>
+<h2 id="2-第四代4G-LTE核心网"><a href="#2-第四代4G-LTE核心网" class="headerlink" title="2. 第四代4G-LTE核心网"></a>2. 第四代4G-LTE核心网</h2><h3 id="2-1-4G核心网分类"><a href="#2-1-4G核心网分类" class="headerlink" title="2.1 4G核心网分类"></a>2.1 4G核心网分类</h3><p>4G-LTE核心网被称作 EPC（Evolved Packet Core）<br>EPC可以分成两类：</p>
+<ul>
+<li>传统的LTE核心网: 仅支持接入LTE基站</li>
+<li>升级的LTE核心网(EPC+): 不仅支持接入LTE基站，也可支持接入5G基站</li>
+</ul>
+<h3 id="2-2-4G核心网架构"><a href="#2-2-4G核心网架构" class="headerlink" title="2.2 4G核心网架构"></a>2.2 4G核心网架构</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211223.png" alt="image2"></p>
+<p>如图，4G核心网主要由以下网元(Network Function)组成</p>
+<blockquote>
+<p><strong>控制面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 140pt">MME(移动性管理实体)</div></td>
+<td><div style="width: 300pt">负责追踪和管理终端在RAN中的移动性</div></td>
+</tr>
+<tr>
+<td>HSS(归属用户服务器)</td>
+<td>一个数据库，存储与用户签约相关的信息</td>
+</tr>
+<tr>
+<td>PCRF(策略和计费规则)</td>
+<td>负责策略控制决策和流量计费</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p><strong>用户面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 140pt"> SGW(服务网关) </div></td>
+<td><div style="width: 300pt"> 本质上是IP路由器，主要负责与RAN之间转发IP数据包</div></td>
+</tr>
+<tr>
+<td>PGW(分组网关)</td>
+<td>本质上是IP路由器，将核心网连接到外部Internet</td>
+</tr>
+</tbody></table>
+</blockquote>
+<hr>
+<h2 id="3-第五代5G核心网"><a href="#3-第五代5G核心网" class="headerlink" title="3. 第五代5G核心网"></a>3. 第五代5G核心网</h2><h3 id="3-1-5G核心网概述"><a href="#3-1-5G核心网概述" class="headerlink" title="3.1 5G核心网概述"></a>3.1 5G核心网概述</h3><p>5G核心网被称作NGC（Next Generation Core）。<br>NGC是依据5G标准新建的核心网，仅支持接入5G基站。</p>
+<h3 id="3-2-5G核心网架构"><a href="#3-2-5G核心网架构" class="headerlink" title="3.2 5G核心网架构"></a>3.2 5G核心网架构</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211748.png" alt="image3"></p>
+<p>5G核心网主要由以下网元(Network Function)组成:</p>
+<blockquote>
+<p><strong>控制面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+<th>4G核心网对应网元</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 160pt"> AMF(接入和移动性管理功能)</div></td>
+<td>负责终端的移动性和接入管理，包括接入、连接、移动性管理，以及鉴权、位置服务等</td>
+<td><div style="width: 140pt"> 大致对应4G EPC中的MME的功能</div></td>
+</tr>
+<tr>
+<td>UDM(统一数据管理)</td>
+<td>管理用户数据，包括用户标识、用户签约数据、鉴权数据等</td>
+<td>大致对应4G EPC的HSS的部分功能</td>
+</tr>
+<tr>
+<td>PCF(策略控制功能)</td>
+<td>负责策略控制</td>
+<td>大致对应4G EPC中的PCRF功能</td>
+</tr>
+<tr>
+<td>AUSF(鉴权服务器功能)</td>
+<td>就是鉴权服务器，配合UDM专门负责用户鉴权</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NEF(网络开放功能)</td>
+<td>通过API接口将，将其他网元的业务能力开放给第三方服务商</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NRF(网络功能库)</td>
+<td>负责对其他网元进行服务注册登记、状态监测等；并允许每个网元可以发现其它其他网元提供的服务。类似Keystone</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NSSF(网络切片选择功能)</td>
+<td>管理网络切片相关信息，比如负责为终端选择网络切片</td>
+<td>/</td>
+</tr>
+<tr>
+<td>SMF(会话管理功能)</td>
+<td>==负责会话管理功能，包括IP地址分配、QoS控制、转发路由控制等==</td>
+<td>大致对应MME的部分功能加上S/PGW的部分控制面功能</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p><strong>用户面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+<th>4G核心网对应网元</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 160pt"> UPF(用户面功能)</div></td>
+<td>==负责在无线接入网和Internet之间转发流量、报告流量使用情况、QoS策略实施等==</td>
+<td><div style="width: 140pt"> 对应4G EPC中的S/PGW的用户面</div></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h3 id="3-3-5G核心网架构相比于4G核心网架构的提升"><a href="#3-3-5G核心网架构相比于4G核心网架构的提升" class="headerlink" title="3.3 5G核心网架构相比于4G核心网架构的提升"></a>3.3 5G核心网架构相比于4G核心网架构的提升</h3><ol>
+<li> 5G核心网的控制面和用户面彻底分离，这使得用户面UPF可灵活下沉，并与边缘计算（MEC）一起分布式部署于更接近用户侧的边缘，从而可降低网络时延，使能低时延5G应用</li>
+<li> 5G核心网采用基于服务的架构（SBA）设计，其通过云原生、无状态的VNF（虚拟化网络功能）和共享的数据层让5G核心网更加弹性、高效和灵活</li>
+</ol>
+<hr>
+<h2 id="4-5G专网"><a href="#4-5G专网" class="headerlink" title="4. 5G专网"></a>4. 5G专网</h2><h3 id="4-1-5G专网的分类"><a href="#4-1-5G专网的分类" class="headerlink" title="4.1 5G专网的分类"></a>4.1 5G专网的分类</h3><p>5G专网分为两大类：</p>
+<ol>
+<li>  国家提供专用的5G频段，用于行业客户自行来组一套完整的5G网络(接入网和核心网都是完全独立的网络)。由于国家不开放私有化的网络频段，行业客户也没有能力去组建一套完整的5G网络，所以==不讨论==</li>
+<li> 运营商通过切片技术，通过UPF分流，将用户的数据直接传送到用户的内网，==默认讨论5G专网是依靠此方法实现的==</li>
+</ol>
+<h3 id="4-1-5G专网的特性"><a href="#4-1-5G专网的特性" class="headerlink" title="4.1 5G专网的特性"></a>4.1 5G专网的特性</h3><ol>
+<li> 终端到基站之间通信使用的是5G网络</li>
+<li> 专网的数据是需要UPF设备进行分流的，上行不进入运营商的5G核心网</li>
+</ol>
+<p>只有同时满足以上两条才可以，否则不能算是专网</p>
+<h3 id="4-2-5G专网图解"><a href="#4-2-5G专网图解" class="headerlink" title="4.2 5G专网图解"></a>4.2 5G专网图解</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717213047.png" alt="image4"></p>
+<blockquote>
+<ol>
+<li>在运营商的5G核心网中的SMF中定制园区专属的分流策略</li>
+<li>SMF中的分流策略，下发到园区专属搭建的UPF上</li>
+<li>终端上线之后只要接入园区内的eNB，会从SMF拿到一个内网地址</li>
+<li>内网流量到达私有UPF之后，可以进行本地的边缘计算(MEC)，然后进入内网，这样的数据传输环节将大大减小(用户面流量不进入运营商5G核心网，也不进入互联网)</li>
 </ol>
 </blockquote>
 ]]></content>

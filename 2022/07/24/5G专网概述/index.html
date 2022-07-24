@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述：5G接入网&#x2F;核心网的基本概念，以及5G专网是如何实现的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5G专网概述">
+<meta property="og:url" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/index.html">
+<meta property="og:site_name" content="Cc&#39;s Blog">
+<meta property="og:description" content="概述：5G接入网&#x2F;核心网的基本概念，以及5G专网是如何实现的">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717205649.png">
+<meta property="og:image" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211223.png">
+<meta property="og:image" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211748.png">
+<meta property="og:image" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717213047.png">
+<meta property="article:published_time" content="2022-07-24T08:37:14.000Z">
+<meta property="article:modified_time" content="2022-07-24T09:54:54.570Z">
+<meta property="article:author" content="Cheng Chen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717205649.png">
+
+
+<link rel="canonical" href="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/","path":"2022/07/24/5G专网概述/","title":"5G专网概述"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>5G专网概述 | Cc's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay Simple</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-%E7%A7%BB%E5%8A%A8%E7%BD%91%E7%BB%9C%E6%A6%82%E8%BF%B0"><span class="nav-text">1. 移动网络概述</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-1-%E6%97%A0%E7%BA%BF%E6%8E%A5%E5%85%A5%E7%BD%91-RAN"><span class="nav-text">1.1 无线接入网(RAN)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-2-%E7%A7%BB%E5%8A%A8%E6%A0%B8%E5%BF%83%E7%BD%91"><span class="nav-text">1.2 移动核心网</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-%E7%AC%AC%E5%9B%9B%E4%BB%A34G-LTE%E6%A0%B8%E5%BF%83%E7%BD%91"><span class="nav-text">2. 第四代4G-LTE核心网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#2-1-4G%E6%A0%B8%E5%BF%83%E7%BD%91%E5%88%86%E7%B1%BB"><span class="nav-text">2.1 4G核心网分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-2-4G%E6%A0%B8%E5%BF%83%E7%BD%91%E6%9E%B6%E6%9E%84"><span class="nav-text">2.2 4G核心网架构</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-%E7%AC%AC%E4%BA%94%E4%BB%A35G%E6%A0%B8%E5%BF%83%E7%BD%91"><span class="nav-text">3. 第五代5G核心网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-5G%E6%A0%B8%E5%BF%83%E7%BD%91%E6%A6%82%E8%BF%B0"><span class="nav-text">3.1 5G核心网概述</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-5G%E6%A0%B8%E5%BF%83%E7%BD%91%E6%9E%B6%E6%9E%84"><span class="nav-text">3.2 5G核心网架构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-3-5G%E6%A0%B8%E5%BF%83%E7%BD%91%E6%9E%B6%E6%9E%84%E7%9B%B8%E6%AF%94%E4%BA%8E4G%E6%A0%B8%E5%BF%83%E7%BD%91%E6%9E%B6%E6%9E%84%E7%9A%84%E6%8F%90%E5%8D%87"><span class="nav-text">3.3 5G核心网架构相比于4G核心网架构的提升</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-5G%E4%B8%93%E7%BD%91"><span class="nav-text">4. 5G专网</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-5G%E4%B8%93%E7%BD%91%E7%9A%84%E5%88%86%E7%B1%BB"><span class="nav-text">4.1 5G专网的分类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-5G%E4%B8%93%E7%BD%91%E7%9A%84%E7%89%B9%E6%80%A7"><span class="nav-text">4.1 5G专网的特性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-5G%E4%B8%93%E7%BD%91%E5%9B%BE%E8%A7%A3"><span class="nav-text">4.2 5G专网图解</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheng Chen"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Cheng Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Cheng Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cc's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="5G专网概述 | Cc's Blog">
+      <meta itemprop="description" content="概述：5G接入网/核心网的基本概念，以及5G专网是如何实现的">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          5G专网概述
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-07-24 16:37:14 / Modified: 17:54:54" itemprop="dateCreated datePublished" datetime="2022-07-24T16:37:14+08:00">2022-07-24</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Networking/" itemprop="url" rel="index"><span itemprop="name">Networking</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">概述：5G接入网/核心网的基本概念，以及5G专网是如何实现的</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1-移动网络概述"><a href="#1-移动网络概述" class="headerlink" title="1. 移动网络概述"></a>1. 移动网络概述</h2><p>不管是2G、3G、4G还是5G，移动通信网络主要由两个子系统组成</p>
+<ol>
+<li> 无线接入网（RAN）</li>
+<li> 移动核心网</li>
+</ol>
+<h3 id="1-1-无线接入网-RAN"><a href="#1-1-无线接入网-RAN" class="headerlink" title="1.1 无线接入网(RAN)"></a>1.1 无线接入网(RAN)</h3><ul>
+<li><p>  RAN负责管理无线部分，以高效利用频谱资源，并满足用户的服务质量需求</p>
+</li>
+<li><p>RAN的关键组件叫基站，不同时代的基站的别名不同</p>
+<table>
+<thead>
+<tr>
+<th>移动网络Generation</th>
+<th>基站别名</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 150pt">2G</div></td>
+<td><div style="width: 150pt">BTS</div></td>
+</tr>
+<tr>
+<td>3G</td>
+<td>NodeB</td>
+</tr>
+<tr>
+<td>4G</td>
+<td>eNB</td>
+</tr>
+<tr>
+<td>5G</td>
+<td>gNB</td>
+</tr>
+</tbody></table>
+</li>
+</ul>
+<h3 id="1-2-移动核心网"><a href="#1-2-移动核心网" class="headerlink" title="1.2 移动核心网"></a>1.2 移动核心网</h3><p>在移动网络的核心网中，可以分成两个网络面：==控制面和用户面==<br><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717205649.png" alt="image1"></p>
+<table>
+<thead>
+<tr>
+<th>核心网网络面</th>
+<th>网络面作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 150pt">控制面</div></td>
+<td><div style="width: 150pt">承载信令或控制消息</div></td>
+</tr>
+<tr>
+<td>用户面(也叫数据面或转发面)</td>
+<td>承载数据流量</td>
+</tr>
+</tbody></table>
+<blockquote>
+<p><strong>移动核心网的能力</strong></p>
+<ol>
+<li><p>移动核心网在RAN和Internet之间架起了一道桥梁，为数据和语音服务提供Internet连接</p>
+</li>
+<li><p> 确保连接的QoS质量要求</p>
+</li>
+<li><p> 管理用户移动性，以确保服务不中断</p>
+</li>
+<li><p> 计费</p>
+</li>
+</ol>
+</blockquote>
+<blockquote>
+<p><strong>终端用户通过移动网络建立会话的过程概述</strong><br>终端上网时，基站会为终端建立无线信道连接。这个过程主要分为控制面连接和用户面连接两个阶段：<br>    1.  首先，基站会在手机和核心网的控制面之间建立“控制面”连接，并在两者之间转发信令消息，这些消息包括手机身份验证、注册、移动性管理等。<br>    2.  然后，基站会在手机和核心网的用户面之间建立“用户面”连接，转发用户数据流量</p>
+</blockquote>
+<hr>
+<h2 id="2-第四代4G-LTE核心网"><a href="#2-第四代4G-LTE核心网" class="headerlink" title="2. 第四代4G-LTE核心网"></a>2. 第四代4G-LTE核心网</h2><h3 id="2-1-4G核心网分类"><a href="#2-1-4G核心网分类" class="headerlink" title="2.1 4G核心网分类"></a>2.1 4G核心网分类</h3><p>4G-LTE核心网被称作 EPC（Evolved Packet Core）<br>EPC可以分成两类：</p>
+<ul>
+<li>传统的LTE核心网: 仅支持接入LTE基站</li>
+<li>升级的LTE核心网(EPC+): 不仅支持接入LTE基站，也可支持接入5G基站</li>
+</ul>
+<h3 id="2-2-4G核心网架构"><a href="#2-2-4G核心网架构" class="headerlink" title="2.2 4G核心网架构"></a>2.2 4G核心网架构</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211223.png" alt="image2"></p>
+<p>如图，4G核心网主要由以下网元(Network Function)组成</p>
+<blockquote>
+<p><strong>控制面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 140pt">MME(移动性管理实体)</div></td>
+<td><div style="width: 300pt">负责追踪和管理终端在RAN中的移动性</div></td>
+</tr>
+<tr>
+<td>HSS(归属用户服务器)</td>
+<td>一个数据库，存储与用户签约相关的信息</td>
+</tr>
+<tr>
+<td>PCRF(策略和计费规则)</td>
+<td>负责策略控制决策和流量计费</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p><strong>用户面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 140pt"> SGW(服务网关) </div></td>
+<td><div style="width: 300pt"> 本质上是IP路由器，主要负责与RAN之间转发IP数据包</div></td>
+</tr>
+<tr>
+<td>PGW(分组网关)</td>
+<td>本质上是IP路由器，将核心网连接到外部Internet</td>
+</tr>
+</tbody></table>
+</blockquote>
+<hr>
+<h2 id="3-第五代5G核心网"><a href="#3-第五代5G核心网" class="headerlink" title="3. 第五代5G核心网"></a>3. 第五代5G核心网</h2><h3 id="3-1-5G核心网概述"><a href="#3-1-5G核心网概述" class="headerlink" title="3.1 5G核心网概述"></a>3.1 5G核心网概述</h3><p>5G核心网被称作NGC（Next Generation Core）。<br>NGC是依据5G标准新建的核心网，仅支持接入5G基站。</p>
+<h3 id="3-2-5G核心网架构"><a href="#3-2-5G核心网架构" class="headerlink" title="3.2 5G核心网架构"></a>3.2 5G核心网架构</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717211748.png" alt="image3"></p>
+<p>5G核心网主要由以下网元(Network Function)组成:</p>
+<blockquote>
+<p><strong>控制面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+<th>4G核心网对应网元</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 160pt"> AMF(接入和移动性管理功能)</div></td>
+<td>负责终端的移动性和接入管理，包括接入、连接、移动性管理，以及鉴权、位置服务等</td>
+<td><div style="width: 140pt"> 大致对应4G EPC中的MME的功能</div></td>
+</tr>
+<tr>
+<td>UDM(统一数据管理)</td>
+<td>管理用户数据，包括用户标识、用户签约数据、鉴权数据等</td>
+<td>大致对应4G EPC的HSS的部分功能</td>
+</tr>
+<tr>
+<td>PCF(策略控制功能)</td>
+<td>负责策略控制</td>
+<td>大致对应4G EPC中的PCRF功能</td>
+</tr>
+<tr>
+<td>AUSF(鉴权服务器功能)</td>
+<td>就是鉴权服务器，配合UDM专门负责用户鉴权</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NEF(网络开放功能)</td>
+<td>通过API接口将，将其他网元的业务能力开放给第三方服务商</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NRF(网络功能库)</td>
+<td>负责对其他网元进行服务注册登记、状态监测等；并允许每个网元可以发现其它其他网元提供的服务。类似Keystone</td>
+<td>/</td>
+</tr>
+<tr>
+<td>NSSF(网络切片选择功能)</td>
+<td>管理网络切片相关信息，比如负责为终端选择网络切片</td>
+<td>/</td>
+</tr>
+<tr>
+<td>SMF(会话管理功能)</td>
+<td>==负责会话管理功能，包括IP地址分配、QoS控制、转发路由控制等==</td>
+<td>大致对应MME的部分功能加上S/PGW的部分控制面功能</td>
+</tr>
+</tbody></table>
+</blockquote>
+<blockquote>
+<p><strong>用户面</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>网元名称</th>
+<th>网元功能</th>
+<th>4G核心网对应网元</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><div style="width: 160pt"> UPF(用户面功能)</div></td>
+<td>==负责在无线接入网和Internet之间转发流量、报告流量使用情况、QoS策略实施等==</td>
+<td><div style="width: 140pt"> 对应4G EPC中的S/PGW的用户面</div></td>
+</tr>
+</tbody></table>
+</blockquote>
+<h3 id="3-3-5G核心网架构相比于4G核心网架构的提升"><a href="#3-3-5G核心网架构相比于4G核心网架构的提升" class="headerlink" title="3.3 5G核心网架构相比于4G核心网架构的提升"></a>3.3 5G核心网架构相比于4G核心网架构的提升</h3><ol>
+<li> 5G核心网的控制面和用户面彻底分离，这使得用户面UPF可灵活下沉，并与边缘计算（MEC）一起分布式部署于更接近用户侧的边缘，从而可降低网络时延，使能低时延5G应用</li>
+<li> 5G核心网采用基于服务的架构（SBA）设计，其通过云原生、无状态的VNF（虚拟化网络功能）和共享的数据层让5G核心网更加弹性、高效和灵活</li>
+</ol>
+<hr>
+<h2 id="4-5G专网"><a href="#4-5G专网" class="headerlink" title="4. 5G专网"></a>4. 5G专网</h2><h3 id="4-1-5G专网的分类"><a href="#4-1-5G专网的分类" class="headerlink" title="4.1 5G专网的分类"></a>4.1 5G专网的分类</h3><p>5G专网分为两大类：</p>
+<ol>
+<li>  国家提供专用的5G频段，用于行业客户自行来组一套完整的5G网络(接入网和核心网都是完全独立的网络)。由于国家不开放私有化的网络频段，行业客户也没有能力去组建一套完整的5G网络，所以==不讨论==</li>
+<li> 运营商通过切片技术，通过UPF分流，将用户的数据直接传送到用户的内网，==默认讨论5G专网是依靠此方法实现的==</li>
+</ol>
+<h3 id="4-1-5G专网的特性"><a href="#4-1-5G专网的特性" class="headerlink" title="4.1 5G专网的特性"></a>4.1 5G专网的特性</h3><ol>
+<li> 终端到基站之间通信使用的是5G网络</li>
+<li> 专网的数据是需要UPF设备进行分流的，上行不进入运营商的5G核心网</li>
+</ol>
+<p>只有同时满足以上两条才可以，否则不能算是专网</p>
+<h3 id="4-2-5G专网图解"><a href="#4-2-5G专网图解" class="headerlink" title="4.2 5G专网图解"></a>4.2 5G专网图解</h3><p><img src="/2022/07/24/5G%E4%B8%93%E7%BD%91%E6%A6%82%E8%BF%B0/image-20220717213047.png" alt="image4"></p>
+<blockquote>
+<ol>
+<li>在运营商的5G核心网中的SMF中定制园区专属的分流策略</li>
+<li>SMF中的分流策略，下发到园区专属搭建的UPF上</li>
+<li>终端上线之后只要接入园区内的eNB，会从SMF拿到一个内网地址</li>
+<li>内网流量到达私有UPF之后，可以进行本地的边缘计算(MEC)，然后进入内网，这样的数据传输环节将大大减小(用户面流量不进入运营商5G核心网，也不进入互联网)</li>
+</ol>
+</blockquote>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/07/23/NAC-802-1-MAC-Portal/" rel="prev" title="NAC-802.1/MAC/Portal">
+                  <i class="fa fa-chevron-left"></i> NAC-802.1/MAC/Portal
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheng Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
