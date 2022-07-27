@@ -823,7 +823,7 @@
       </categories>
   </entry>
   <entry>
-    <title>OVS</title>
+    <title>Open vSwitch</title>
     <url>/2022/07/27/OVS/</url>
     <content><![CDATA[<h1 id="1-OVS概述"><a href="#1-OVS概述" class="headerlink" title="1. OVS概述"></a>1. OVS概述</h1><p><strong>OVS简介</strong></p>
 <p>Open vSwitch简称OVS，OVS是一个支持多层数据转发的高质量虚拟交换机，主要部署在服务器上，相比传统交换机具有很好的编程扩展性，同时具备传统交换机实现的网络隔离和数据转发功能，运行在每个实现虚拟化的物理机器上，并提供远程管理。</p>
