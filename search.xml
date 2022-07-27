@@ -1040,4 +1040,74 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>VxLAN</title>
+    <url>/2022/07/27/VxLAN/</url>
+    <content><![CDATA[<h2 id="1-现有的痛点"><a href="#1-现有的痛点" class="headerlink" title="1. 现有的痛点"></a>1. 现有的痛点</h2><ol>
+<li><p>虚拟机规模受网络设备表项规格的限制</p>
+<p> 以一台汇聚层交换机为例：</p>
+<ul>
+<li> 汇聚层的交换机需要学习大量的MAC地址表象(自己连接的每一台接入层交换机的mac地址表的总和）</li>
+<li>  汇聚层交换机MAC地址表太多的话，交换机内存不足时，mac地址表象会溢出</li>
+<li>  MAC地址表项溢出，会导致网络APR泛洪，降低网络性能</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>VxLAN如何解决的？</strong><br>VxLAN通过隧道技术实现三层的转发, VXLAN将虚拟机发出的数据包二次封装在UDP中，并使用VTEP的IP/MAC地址作为外层进行封装，对网络只表现为封装后的参数，因此，极大的降低了大二层网路对MAC地址规格的需求。</p>
+</blockquote>
+<ol start="2">
+<li><p>VLAN隔离能力不在满足需求</p>
+<ul>
+<li>网络的二层隔离需求很高</li>
+<li>利用vlan来隔离网络，当网络特别多的时候，vlan数不够(1-4094)</li>
+<li>MAC地址表项溢出，会导致网络APR泛洪，降低网络性能</li>
+</ul>
+</li>
+</ol>
+<blockquote>
+<p><strong>VxLAN如何解决的</strong><br>VXLAN网络标示VNI有24bit(1700w个)</p>
+</blockquote>
+<ol start="3">
+<li>无法跨越三层设备传递二层mac地址信息</li>
+</ol>
+<ul>
+<li>MAC地址是一个二层概念，无法跨越三层设备<br><img src="/2022/07/27/VxLAN/image-20220520141342.png" alt="image1"></li>
+<li>host1要想和直接和mac4通信是不可能的，因为Switch1上没有mac4的信息<blockquote>
+<p><strong>有什么场景需要跨三层设备实现二层可达？</strong></p>
+<ol>
+<li>VPN中，总部服务器，分部需要在一个二层环境中</li>
+<li>虚拟机迁移，顾名思义，就是将虚拟机从一个物理机迁移到另一个物理机，但是要求在迁移过程中业务不能中断。要做到这一点，需要保证虚拟机迁移前后，其IP地址、MAC地址等参数维持不变</li>
+</ol>
+</blockquote>
+</li>
+</ul>
+<blockquote>
+<p><strong>VxLAN如何解决的?</strong><br>VxLAN最重要的能力: VxLAN通过隧道技术，可以实现在跨越三层设备的情况下，这两台server就像在同一个LAN之间通信是一样的(mac地址直接可达)</p>
+</blockquote>
+<h2 id="2-VxLAN原理"><a href="#2-VxLAN原理" class="headerlink" title="2. VxLAN原理"></a>2. VxLAN原理</h2><h3 id="2-1-VxLAN框架"><a href="#2-1-VxLAN框架" class="headerlink" title="2.1 VxLAN框架"></a>2.1 VxLAN框架</h3><p><img src="/2022/07/27/VxLAN/image-20220520170337.png" alt="image2"><br>1）VTEP（VXLAN tunnelend point，VXLAN隧道端点)：VXLAN的边缘设备，针对VXLAN的处理都在VTEP上进行，例如识别以太网数据帧所属的VXLAN，基于VXLAN对数据帧进行二层转发、封装/解封装报文等。VTEP可以是一台独立的物理设备也可以是虚拟机所在的服务器。</p>
+<p>2）VXLAN隧道：两个VTEP之间的点到点的逻辑隧道，VTEP为数据帧封装VXLAN头，UDP头和IP头，通过VXLAN隧道将封装后的报文传递到远端VTEP，远端VTEP设备对其进行解封装。</p>
+<p>3）核心设备：IP核心网络中的设备，其核心设备不需要参与VXLAN的处理，仅需根据封装后报文的目的IP地址地报文进行三次转发。</p>
+<p>4）VSI（VirtualSwitch Instance，虚拟交换实例）：VTEP上为一个VXLAN提供二层交换服务的虚拟交换实例，可以看做是VTEP设备上一台基于VXLAN进行二层转发的虚拟交换机，它可以具有传统以太网交换机所具有的所有功能，包括源MAC地址的学习、MAC地址老化，洪泛等。VSI与VXLAN一一对应。</p>
+<h3 id="2-2-VXLAN报文封装格式"><a href="#2-2-VXLAN报文封装格式" class="headerlink" title="2.2  VXLAN报文封装格式"></a>2.2  VXLAN报文封装格式</h3><p><img src="/2022/07/27/VxLAN/image-20220520161026.png" alt="image3"><br>在原始的二层数据帧外二次封装 添加8字节的VXLAN头，8字节UDP头和2字节的IP头。</p>
+<p>UDP头：携带目的端口号为VXLAN固定UDP端口号（缺省值为4789）</p>
+<p>VXLAN头主要包含两部分：</p>
+<ol>
+<li><p> 标志位：“I”位为1，表示VXLAN投中的VXLAN ID有效；为0，表示VXLAN ID无效，其他保留未用，设置为0；</p>
+</li>
+<li><p> VXLAN ID：用来标识一个VXLAN网络，长度为24比特；</p>
+</li>
+</ol>
+<h2 id="3-VxLAN隧道"><a href="#3-VxLAN隧道" class="headerlink" title="3. VxLAN隧道"></a>3. VxLAN隧道</h2><p>为了将VXLAN报文传递到远端VTEP，需要创建VXLAN隧道，并将VXLAN隧道与VXLAN关联起来。</p>
+<p>1、  创建VXLAN隧道</p>
+<p>（1）      <strong>手工方式</strong>：手工配置Tunnel接口，并指定隧道的源和目的IP地址分别为本端和远端VTEP的IP地址；</p>
+<p>（2）      自动方式：通过ENDP（Enhance Neighbor Discovery Protocol，增强的邻居发现协议）发现远端VTEP，自动在本端和远端VTEP之间建立VXLAN隧道。</p>
+<p>2、  关联VXLAN隧道与VXLAN</p>
+<p>（1）      手工方式：手工将VXLAN隧道和VXLAN进行关联；</p>
+<p>（2）      自动方式：通过扩展IS-IS协议发布VXLAN ID信息。VTEP在所有的VXLAN隧道上通过IS-IS将本地存在的VXLAN ID通告给远端VTEP。</p>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>
