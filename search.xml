@@ -193,7 +193,52 @@
 <p><strong>EAP终结方式</strong><br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-220220724224025.png" alt="image6"><br>(1) 终端向接人设备发送一个EAPoL-Start报文，开始802.1x认证接入；<br>(2) 接入设备向终端发送EAP-Request/Identity 报文，要求客户端将用户名发过来；<br>(3) 终端回应一个EAP-Response/Identity 给接入设备，其中包括用户名；<br>(4) 接入设备产生一个EAP-Request/MD5-Challenge报文，发送给终端；<br>(5) 终端收到EAP-Request/MD5-Challenge报文后，对“用户密码+Challenge”做MD5算法生成Challenged-Password，将Challenged-Password封装到EAP-Response/MD5-Challenge 回应给接入设备；<br>(6) 接入设备提取出用户名和密码，将其封装到Radius的Access-Request 报文中(PAP或CHAP方式)，发送给认证服务器；<br>(7) 认证服务器现在拥有了终端的用户名以及密码，采用PAP或CHAP的方式认证用户，如成功，认证服务器生成EAP-Success报文，封装到Radius的Access-Accept 报文中，发送给接入设备；<br>(8) 接入设备拆掉Radius封装，把EAP-Success报文发送给终端，并将端口改为授权状态。<br>(9) 终端可以发送EAPoL-Logoff报文给接入设备，主动要求下线；<br>(10) 接入设备把端口状态从授权状态改变成未授权状态，并向客户端发送EAP-Failure报文。</p>
 </blockquote>
 <hr>
-<h1 id="3-MAC认证"><a href="#3-MAC认证" class="headerlink" title="3. MAC认证"></a>3. MAC认证</h1><h1 id="4-Portal认证"><a href="#4-Portal认证" class="headerlink" title="4. Portal认证"></a>4. Portal认证</h1><h2 id="4-1-Portal认证简介"><a href="#4-1-Portal认证简介" class="headerlink" title="4.1 Portal认证简介"></a>4.1 Portal认证简介</h2><p><strong>定义</strong><br>Portal认证通常也称为Web认证，一般将Portal认证网站称为门户网站。<br>用户上网时，必须在门户网站进行认证，如果未认证成功，仅可以访问特定的网络资源，认证成功后，才可以访问其他网络资源。</p>
+<h1 id="3-MAC认证"><a href="#3-MAC认证" class="headerlink" title="3. MAC认证"></a>3. MAC认证</h1><h2 id="3-1-MAC认证简介"><a href="#3-1-MAC认证简介" class="headerlink" title="3.1 MAC认证简介"></a>3.1 MAC认证简介</h2><p><strong>定义</strong><br>MAC认证，全称MAC地址认证，是一种基于接口的认证方式，基于终端MAC地址对用户的访问权限进行控制。</p>
+<p><strong>特点</strong></p>
+<ul>
+<li>  用户终端不需要安装任何客户端软件。</li>
+<li>  MAC认证过程中，不需要用户手动输入用户名和密码。</li>
+<li>  能够对不具备802.1X认证能力的终端进行认证，如打印机和传真机等哑终端。</li>
+</ul>
+<p><strong>认证系统</strong><br>MAC认证系统为典型的客户端/服务器结构，包括三个实体：终端、接入设备和认证服务器<br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-20220831175958.png" alt="image12"></p>
+<blockquote>
+<ul>
+<li>终端：尝试接入网络的终端设备。</li>
+<li>接入设备：是终端访问网络的其中一个网络节点，在这个设备上启用MAC认证。</li>
+<li>认证服务器：用于实现对用户进行认证、授权，通常为RADIUS服务器。</li>
+</ul>
+</blockquote>
+<hr>
+<h2 id="3-2-MAC认证流程"><a href="#3-2-MAC认证流程" class="headerlink" title="3.2 MAC认证流程"></a>3.2 MAC认证流程</h2><blockquote>
+<p><strong>终端-接入设备</strong><br>不需要专门的协议承载(比如802.1x需要EAP协议承载请求报文)，接入设备收到终端发送的arp/dhcp/dhcpv6/nd报文，就可以触发MAC认证</p>
+<p><strong>接入设备-认证服务器</strong><br>接入设备与认证服务器之间的认证过程使用Radius协议承载<br>MAC认证可以使用的Radius用户认证机制有两种：PAP/CHAP</p>
+</blockquote>
+<p><strong>MAC认证流程(PAP机制)</strong><br><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-20220831181630.png" alt="image11"></p>
+<p>(1) 接入设备收到终端发送的arp/dhcp/dhcpv6/nd报文，触发MAC认证。<br>(2) PAP机制中，接入设备将认证用户的<strong>共享密钥、自己生成的随机值</strong>依次排列后经过MD5算法进行HASH处理；然后将<strong>用户名、HASH处理结果以及随机值</strong>封装在RADIUS认证请求报文中发送给RADIUS服务器，请求RADIUS服务器对该终端进行身份认证。<br>(3) RADIUS服务器使用本地数据库中对应认证用户的信息进行认证，认证成功则发送认证接受报文，认证失败则发送认证失败报文。</p>
+<p><strong>MAC认证流程(CHAP机制)</strong><br>(1) 接入设备收到终端发送的arp/dhcp/dhcpv6/nd报文，触发MAC认证。<br>(2) PAP机制中，接入设备发起一个ChallengeID请求给Radius服务器<br>(3) Radius服务回复一个MD5-Challenge发送给接入设备<br>(4) 接入设备将认证用户的<strong>共享密钥、自己生成的随机值、ChallengeID</strong>次排列后经过MD5算法进行HASH处理；然后将<strong>用户名、HASH处理结果以及随机值</strong>封装在RADIUS认证请求报文中发送给RADIUS服务器，请求RADIUS服务器对该终端进行身份认证。<br>(5) RADIUS服务器使用本地数据库中对应认证用户的信息进行认证，认证成功则发送认证接受报文，认证失败则发送认证失败报文。</p>
+<blockquote>
+<p><strong>CcNotes：</strong><br>可以看到MAC认证的时候也需要用户名和密码来进行Radius认证，那MAC认证的用户名和密码是什么呢？</p>
+<table>
+<thead>
+<tr>
+<th align="left">MAC认证用户名</th>
+<th align="left">MAC认证密码</th>
+<th align="left">适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><div style="width: 40pt"> 终端的MAC地址</div></td>
+<td align="left"><div style="width: 60pt">终端的MAC地址 or 指定的密码</div></td>
+<td align="left">客户端少量部署且MAC地址容易获取的场景</td>
+</tr>
+<tr>
+<td align="left">指定的用户名</td>
+<td align="left">指定的密码</td>
+<td align="left">当同一个接口下可以存在多个终端，可以在这个接口配置一套MAC认证的用户名密码，此时所有终端均使用指定的用户名和密码进行MAC认证，服务器端仅需要配置一个账户即可满足这个接口下所有终端的MAC认证需求</td>
+</tr>
+</tbody></table>
+</blockquote>
+<h1 id="4-Portal认证"><a href="#4-Portal认证" class="headerlink" title="4. Portal认证"></a>4. Portal认证</h1><h2 id="4-1-Portal认证简介"><a href="#4-1-Portal认证简介" class="headerlink" title="4.1 Portal认证简介"></a>4.1 Portal认证简介</h2><p><strong>定义</strong><br>Portal认证通常也称为Web认证，一般将Portal认证网站称为门户网站。<br>用户上网时，必须在门户网站进行认证，如果未认证成功，仅可以访问特定的网络资源，认证成功后，才可以访问其他网络资源。</p>
 <p><strong>特点</strong></p>
 <ul>
 <li>  一般情况下不需要安装额外的软件客户端，通过浏览器直接在Web页面上认证，简单方便。</li>
@@ -294,26 +339,36 @@
 </tbody></table>
 <hr>
 <h2 id="4-3-Portal认证流程"><a href="#4-3-Portal认证流程" class="headerlink" title="4.3 Portal认证流程"></a>4.3 Portal认证流程</h2><h3 id="4-3-1-基于Portal协议的Portal认证流程"><a href="#4-3-1-基于Portal协议的Portal认证流程" class="headerlink" title="4.3.1 基于Portal协议的Portal认证流程"></a>4.3.1 基于Portal协议的Portal认证流程</h3><p><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-20220831113753.png" alt="image9"></p>
-<ol>
-<li>在Portal认证之前，客户端可与接入设备之间建立起预连接，但只有部分网络访问权限。</li>
-<li>客户端发起HTTP连接请求。</li>
-<li>接入设备将HTTP请求中的URL地址重定向到Portal服务器，返回给客户端。</li>
-<li>客户端根据获得的URL地址，向Portal服务器发起HTTP连接请求(HTTP Request1)。</li>
-<li>Portal服务器向客户端返回Portal认证页面(HTTP Response1)。</li>
-<li>用户在Portal认证页面输入用户名和密码后，客户端向Portal服务器发起Portal认证请求(HTTP Request2)。</li>
-</ol>
-<p><strong>—-认证阶段-基于Portal协议—-</strong><br>7.  (可选) Portal服务器收到Portal认证请求后，如果Portal服务器与接入设备之间采用CHAP认证，则Portal服务器向接入设备发起Portal挑战字请求报文(REQ_CHALLENGE)(Portal Request1)；如果Portal服务器与接入设备之间采用PAP认证，则没有第7.8步。<br>8. (可选)接入设备向Portal服务器回应Portal挑战字应答报文(ACK_CHALLENGE)(Portal Response1)。<br>9. Portal服务器将用户输入的用户名和密码封装在Portal认证请求报文(REQ_AUTH)(Portal Request2)中，发送给接入设备。<br>10. 接入设备根据获取到的用户名和密码，向RADIUS服务器发送RADIUS认证请求(ACCESS-REQUEST)(Radius Request1)。<br>11. RADIUS服务器对用户名和密码进行认证。如果认证成功，则RADIUS服务器向接入设备发送认证接受报文(ACCESS-ACCEPT)(Radius Response1)；如果认证失败，则RADIUS服务器返回认证拒绝报文(ACCESS-REJECT)。<br>12. 接入设备根据接收到的认证结果接入/拒绝用户。如果允许用户接入，则接入设备向RADIUS服务器发送计费开始请求报文(ACCOUNTING-REQUEST)(Radius Request2)。<br>13. RADIUS服务器返回计费开始响应报文(ACCOUNTING-RESPONSE)(Radius Response2)，并开始计费。<br>14. 接入设备向Portal服务器返回Portal认证结果(ACK_AUTH)(Portal Response2)，并将用户加入自身在线用户列表。<br><strong>—-认证阶段-基于Portal协议—-</strong><br>15. Portal服务器向客户端发送认证结果报文(HTTP Response2)，通知客户端认证成功，并将用户加入自身在线用户列表。<br>16. Portal服务器向接入设备发送认证应答确认(AFF_ACK_AUTH)(对Portal Response2的确认)</p>
+<p>(1) 在Portal认证之前，客户端可与接入设备之间建立起预连接，但只有部分网络访问权限。</p>
+<p>(2) 客户端发起HTTP连接请求。</p>
+<p>(3) 接入设备将HTTP请求中的URL地址重定向到Portal服务器，返回给客户端。</p>
+<p>(4) 客户端根据获得的URL地址，向Portal服务器发起HTTP连接请求(HTTP Request1)。</p>
+<p>(5) Portal服务器向客户端返回Portal认证页面(HTTP Response1)。</p>
+<p>(6) 用户在Portal认证页面输入用户名和密码后，客户端向Portal服务器发起Portal认证请求(HTTP Request2)。<br><strong>认证阶段开始-基于Portal协议</strong></p>
+<p>(7) (可选) Portal服务器收到Portal认证请求后，如果Portal服务器与接入设备之间采用CHAP认证，则Portal服务器向接入设备发起Portal挑战字请求报文(REQ_CHALLENGE)(Portal Request1)；如果Portal服务器与接入设备之间采用PAP认证，则没有第7.8步。</p>
+<p>(8) (可选)接入设备向Portal服务器回应Portal挑战字应答报文(ACK_CHALLENGE)(Portal Response1)。</p>
+<p>(9) Portal服务器将用户输入的用户名和密码封装在Portal认证请求报文(REQ_AUTH)(Portal Request2)中，发送给接入设备。</p>
+<p>(10) 接入设备根据获取到的用户名和密码，向RADIUS服务器发送RADIUS认证请求(ACCESS-REQUEST)(Radius Request1)。</p>
+<p>(11) RADIUS服务器对用户名和密码进行认证。如果认证成功，则RADIUS服务器向接入设备发送认证接受报文(ACCESS-ACCEPT)(Radius Response1)；如果认证失败，则RADIUS服务器返回认证拒绝报文(ACCESS-REJECT)。</p>
+<p>(12) 接入设备根据接收到的认证结果接入/拒绝用户。如果允许用户接入，则接入设备向RADIUS服务器发送计费开始请求报文(ACCOUNTING-REQUEST)(Radius Request2)。</p>
+<p>(13) RADIUS服务器返回计费开始响应报文(ACCOUNTING-RESPONSE)(Radius Response2)，并开始计费。</p>
+<p>(14) 接入设备向Portal服务器返回Portal认证结果(ACK_AUTH)(Portal Response2)，并将用户加入自身在线用户列表。<br><strong>认证阶段结束-基于Portal协议</strong></p>
+<p>(15) Portal服务器向客户端发送认证结果报文(HTTP Response2)，通知客户端认证成功，并将用户加入自身在线用户列表。</p>
+<p>(16) Portal服务器向接入设备发送认证应答确认(AFF_ACK_AUTH)(对Portal Response2的确认)</p>
 <h3 id="4-3-2-基于HTTP-HTTPS协议的Portal认证流程"><a href="#4-3-2-基于HTTP-HTTPS协议的Portal认证流程" class="headerlink" title="4.3.2 基于HTTP/HTTPS协议的Portal认证流程"></a>4.3.2 基于HTTP/HTTPS协议的Portal认证流程</h3><p><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-20220831115955.png" alt="image6"></p>
-<ol>
-<li>在Portal认证之前，客户端可与接入设备之间建立起预连接，但只有部分网络访问权限。</li>
-<li>客户端发起HTTP连接请求。</li>
-<li>接入设备将HTTP请求中的URL地址重定向到Portal服务器，返回给客户端。</li>
-<li>客户端根据获得的URL地址，向Portal服务器发起HTTP连接请求(HTTP Request1)。</li>
-<li>Portal服务器向客户端返回Portal认证页面(HTTP Response1)。</li>
-<li>用户在Portal认证页面输入用户名和密码后，客户端向Portal服务器发起Portal认证请求(HTTP Request2)。</li>
-<li>Portal服务器通知客户端向接入设备发起Portal认证请求(HTTP Response2)。</li>
-</ol>
-<p><strong>—-认证阶段-基于HTTP协议—-</strong><br>8. 客户端向接入设备发起Portal认证请求(HTTP POST/GET)(HTTP Request3)。<br>9. 接入设备根据获取到的用户名和密码，向RADIUS服务器发送RADIUS认证请求(ACCESS-REQUEST)(Radius Request1)。<br>10. RADIUS服务器对用户名和密码进行认证。如果认证成功，则RADIUS服务器向接入设备发送认证接受报文(ACCESS-ACCEPT)(Radius Response1)；如果认证失败，则RADIUS服务器返回认证拒绝报文(ACCESS-REJECT)。<br>11. 接入设备根据接收到的认证结果接入/拒绝用户。如果允许用户接入，则接入设备向RADIUS服务器发送计费开始请求报文(ACCOUNTING-REQUEST)(Radius Request2)。<br>12.  RADIUS服务器返回计费开始响应报文(ACCOUNTING-RESPONSE)(Radius Response2)，并开始计费。<br>13. 接入设备向客户端返回Portal认证结果(HTTP Response3)，并将用户加入自身在线用户列表。<br><strong>—-认证阶段-基于HTTP协议—-</strong></p>
+<p>(1) 在Portal认证之前，客户端可与接入设备之间建立起预连接，但只有部分网络访问权限。</p>
+<p>(2) 客户端发起HTTP连接请求。</p>
+<p>(3) 接入设备将HTTP请求中的URL地址重定向到Portal服务器，返回给客户端。</p>
+<p>(4) 客户端根据获得的URL地址，向Portal服务器发起HTTP连接请求(HTTP Request1)。</p>
+<p>(5) Portal服务器向客户端返回Portal认证页面(HTTP Response1)。</p>
+<p>(6) 用户在Portal认证页面输入用户名和密码后，客户端向Portal服务器发起Portal认证请求(HTTP Request2)。</p>
+<p>(7) Portal服务器通知客户端向接入设备发起Portal认证请求(HTTP Response2)。<br><strong>认证阶段开始-基于HTTP协议</strong></p>
+<p>(8) 客户端向接入设备发起Portal认证请求(HTTP POST/GET)(HTTP Request3)。</p>
+<p>(9) 接入设备根据获取到的用户名和密码，向RADIUS服务器发送RADIUS认证请求(ACCESS-REQUEST)(Radius Request1)。</p>
+<p>(10) RADIUS服务器对用户名和密码进行认证。如果认证成功，则RADIUS服务器向接入设备发送认证接受报文(ACCESS-ACCEPT)(Radius Response1)；如果认证失败，则RADIUS服务器返回认证拒绝报文(ACCESS-REJECT)。</p>
+<p>(11) 接入设备根据接收到的认证结果接入/拒绝用户。如果允许用户接入，则接入设备向RADIUS服务器发送计费开始请求报文(ACCOUNTING-REQUEST)(Radius Request2)。</p>
+<p>(12) RADIUS服务器返回计费开始响应报文(ACCOUNTING-RESPONSE)(Radius Response2)，并开始计费。</p>
+<p>(13) 接入设备向客户端返回Portal认证结果(HTTP Response3)，并将用户加入自身在线用户列表。<br><strong>认证阶段-基于HTTP协议</strong></p>
 ]]></content>
       <categories>
         <category>Networking</category>
