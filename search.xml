@@ -369,6 +369,18 @@
 <p>(11) 接入设备根据接收到的认证结果接入/拒绝用户。如果允许用户接入，则接入设备向RADIUS服务器发送计费开始请求报文(ACCOUNTING-REQUEST)(Radius Request2)。</p>
 <p>(12) RADIUS服务器返回计费开始响应报文(ACCOUNTING-RESPONSE)(Radius Response2)，并开始计费。</p>
 <p>(13) 接入设备向客户端返回Portal认证结果(HTTP Response3)，并将用户加入自身在线用户列表。<br><strong>认证阶段-基于HTTP协议</strong></p>
+<hr>
+<h1 id="5-MAC优先的Portal认证"><a href="#5-MAC优先的Portal认证" class="headerlink" title="5 MAC优先的Portal认证"></a>5 MAC优先的Portal认证</h1><h2 id="5-1-MAC优先的Portal认证定义"><a href="#5-1-MAC优先的Portal认证定义" class="headerlink" title="5.1 MAC优先的Portal认证定义"></a>5.1 MAC优先的Portal认证定义</h2><ul>
+<li>MAC优先的Portal认证是指用户进行Portal认证成功后，在一定时间内断开网络重新连接，能够直接通过MAC认证接入，无需输入用户名密码重新进行Portal认证。</li>
+<li>该功能需要在设备配置MAC+Portal的混合认证，同时在Raidus服务器上开启”Portal认证成功自动注册MAC认证信息“功能并配置MAC地址有效时间。</li>
+<li>用户Portal认证成功后，在MAC地址有效时间内，可以通过MAC认证重新接入网络。</li>
+</ul>
+<h2 id="5-2-认证流程"><a href="#5-2-认证流程" class="headerlink" title="5.2 认证流程"></a>5.2 认证流程</h2><p><img src="/2022/07/23/NAC-802-1-MAC-Portal/image-20220831185938.png" alt="image13"></p>
+<p>(1) 客户端用户首次认证时，接入设备会把客户端的MAC地址发到RADIUS服务器进行认证，但由于RADIUS服务器未查找到MAC地址信息，导致认证失败，触发客户端用户进行Portal认证。<br>(2) Portal认证成功后，RADIUS服务器会自动保存客户端的MAC地址。<br>(3) 当客户端离线后重新尝试接入网络时，接入设备会把客户端的MAC地址发到RADIUS服务器进行认证。</p>
+<ul>
+<li>  如果客户端的MAC地址还保存在RADIUS服务器，则RADIUS服务器校验用户名和密码（用户名和密码均为MAC地址）后，直接进行授权，用户授权后即可以直接访问网络，不需要再次进行Portal认证。</li>
+<li>如果客户端的MAC地址在RADIUS服务器已经过期，则MAC认证失败，并且RADIUS服务器会删除保存的客户端MAC地址。MAC地址认证失败之后，接入设备会向客户端用户推送Portal认证页面。客户端用户输入帐号和密码进行Portal认证。</li>
+</ul>
 ]]></content>
       <categories>
         <category>Networking</category>
