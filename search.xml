@@ -227,8 +227,8 @@
 </tr>
 </thead>
 <tbody><tr>
-<td align="left"><div style="width: 40pt"> 终端的MAC地址</div></td>
-<td align="left"><div style="width: 60pt">终端的MAC地址 or 指定的密码</div></td>
+<td align="left"><div style="width: 80pt"> 终端的MAC地址</div></td>
+<td align="left"><div style="width: 120pt">终端的MAC地址 or 指定的密码</div></td>
 <td align="left">客户端少量部署且MAC地址容易获取的场景</td>
 </tr>
 <tr>
