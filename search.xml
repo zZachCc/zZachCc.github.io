@@ -1298,4 +1298,100 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>PPPoE</title>
+    <url>/2022/09/06/PPPoE/</url>
+    <content><![CDATA[<h1 id="1-PPPoE简介"><a href="#1-PPPoE简介" class="headerlink" title="1. PPPoE简介"></a>1. PPPoE简介</h1><p><strong>什么是PPPoE？</strong></p>
+<ul>
+<li>PPPoE (Point-to-Point over Ethernet) 可以称作以太网上的PPP协议。</li>
+<li>PPPoE实现了在Ethernet上提供点到点的连接，建立PPP会话。</li>
+<li>PPPoE利用以太网，将多用户连接到远程接入设备上(Bras)，提供访问控制功能，并且能够提供计费功能，因为被广泛应用于接入运营商网络。</li>
+</ul>
+<p><strong>PPPoE解决了什么问题？</strong></p>
+<ul>
+<li>Ethernet具有技术成熟，简单易用，成本低等特点，但是Ethernet协议并没有设计用户验证字段，使得其通信双方无法相互验证对方的身份，因而通信是不安全的。</li>
+<li>PPP协议是一种点对点协议，只能用户点到点网络，工作与OSI模型中的第二层，数据链路层，主要用于全双工的异步链路上进行点到点的数据传输。所以PPP协议中没有提供地址信息。</li>
+<li>PPP协议的一个重要功能便是提供了身份验证功能。</li>
+<li>而Ethernet是一个广播类型的多路访问网络，因而PPP协议是无法直接应用在以太网链路上的。<blockquote>
+<p>PPPoE技术应运而生。PPPoE结合了PPP协议通信双方身份验证的功能，在PPP报文外侧再封装PPPoE报头，使其能够承载在Ethernet上。从而实现Ethernet上的点对点通信，使得Ethernet中的客户端能够连接到远端的宽带接入设备上。</p>
+</blockquote>
+</li>
+</ul>
+<p><strong>PPPoE的能力</strong></p>
+<ul>
+<li>PPPoE由于集成了PPP协议，在传统Ethernet上提供了Ethernet本身不具备的 身份验证、加密以及压缩等功能。</li>
+<li>PPPoE通过唯一的Session ID，在Ethernet这个多路访问的网络上实现了P2P网络的效果。</li>
+<li>PPPoE拨号上网作为一种最常见的方式让终端设备能够连接ISP从而实现宽带接入。</li>
+</ul>
+<p>总而言之，PPPoE技术将Ethernet技术的经济性与PPP协议的可管理控制性结合在一起，为用户提供接入互联网的功能。<br>对于运营商来说： 它能够最大限度地利用电信接入网现有的体系结构，利用现有的拨号网络资源，运营和管理的模式也不需要很大的改变。<br>对于用户来说：使用感与原来的拨号上网没有太大区别，较容易接受。</p>
+<h1 id="2-PPPoE报文"><a href="#2-PPPoE报文" class="headerlink" title="2. PPPoE报文"></a>2. PPPoE报文</h1><p>PPPoE报文的格式就是在以太网帧中携带PPP报文，具体报文格式如下：<br><img src="/2022/09/06/PPPoE/image-20220906224755.png" alt="image-1"></p>
+<table>
+<thead>
+<tr>
+<th align="left">报文字段</th>
+<th align="left">说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Ver域</td>
+<td align="left">4bits，PPPoE版本号，值为0x1</td>
+</tr>
+<tr>
+<td align="left">Type域</td>
+<td align="left">4bits，PPPoE类型，值为0x1</td>
+</tr>
+<tr>
+<td align="left">Code域</td>
+<td align="left">8bits，PPPoE报文类型。Code域为0x00，表示会话数据。Code域为0x09，表示PADI报文；Code域为0x07，表示PADO或PADT报文；Code域为0x19，表示PADR报文；Code域为0x65，表示PADS报文</td>
+</tr>
+<tr>
+<td align="left">Session_ID域</td>
+<td align="left">16bits，对于一个给定的PPP会话，该值是一个固定值，并且与以太网Source_address和Destination_address一起实际地定义了一个PPP会话</td>
+</tr>
+<tr>
+<td align="left">Length域</td>
+<td align="left">16bits，定义PPPoE的Payload域长度。不包括以太网头部和PPPoE头部的长度</td>
+</tr>
+</tbody></table>
+<h1 id="3-PPPoE的组网结构"><a href="#3-PPPoE的组网结构" class="headerlink" title="3. PPPoE的组网结构"></a>3. PPPoE的组网结构</h1><p>PPPoE协议采用Client/Server模式，基本的PPPoE组网中的角色有PPPoE Client (拨号设备，可以是终端，也可以是光猫)，PPPoE Server (Bras设备)，以及RADIUS设备 (AAA服务器)。</p>
+<img src="/2022/09/06/PPPoE/image-20220906225608.png" alt="image-2" style="zoom:50%;">
+
+<h1 id="4-PPPoE工作过程"><a href="#4-PPPoE工作过程" class="headerlink" title="4. PPPoE工作过程"></a>4. PPPoE工作过程</h1><p>PPPoE用户上线需要经过两个阶段，<strong>发现阶段</strong>和<strong>PPP会话阶段</strong>。</p>
+<ol>
+<li>发现阶段主要是选择PPPoE服务器，并确定索要建立的会话标识符Session ID。</li>
+<li>PPP会话阶段即执行标准的PPP过程，包括LCP协商、PAP/CHAP认证、NCP协商等阶段。</li>
+</ol>
+<img src="/2022/09/06/PPPoE/image-20220906225825.png" alt="image-6" style="zoom: 50%;">
+
+<h2 id="4-1-发现阶段"><a href="#4-1-发现阶段" class="headerlink" title="4.1 发现阶段"></a>4.1 发现阶段</h2><img src="/2022/09/06/PPPoE/image-20220906230323.png" alt="image-3" style="zoom:50%;">
+发现阶段是指接入设备为用户分配接入的Session ID，用来标识一条用户与接入设备之间的PPPoE虚拟链路。
+
+<ol>
+<li>PPPoE Client广播一个PADI(PPPoE Active Discovery Initiation，PPPoE激活发现起始)报文，在此报文中包含用户想要得到的服务类型信息。</li>
+<li>以太网内的所有PPPoE Server在收到这个初始化报文后，将其中请求的服务与自己能提供的服务进行比较，其中可以为PPPoE Client提供此服务的PPPoE Server会回应PADO(PPPoE Active Discovery Offer，PPPoE激活发现服务)报文。</li>
+<li>PPPoE Client可能会收到多个PPPoE Server回应的PADO报文。PPPoE Client会根据一定的条件从返回PADO报文的PPPoE Server中选定符合条件的PPPoE Server，并向它返回一个会话请求报文PADR（非广播）(PPPoE Active Discovery Request，PPPoE激活发现请求)，在PADR报文中封装所需的服务信息。</li>
+<li>被选定的PPPoE Server在收到PADR报文后，PPPoE Server会产生一个唯一的会话标识以标识它和PPPoE Client的这段PPPoE会话。并把这个特定的会话标识包含在会话确认报文PADS（PPPoE Active Discovery Session-confirmation，PPPoE激活发现会话确认）中回应给PPPoE Client，如果没有错误发生就进入到PPP会话阶段，而PPPoE Client在收到会话确认报文后如果没有错误发生也进入到PPP会话阶段。</li>
+</ol>
+<h2 id="4-2-PPP会话阶段"><a href="#4-2-PPP会话阶段" class="headerlink" title="4.2 PPP会话阶段"></a>4.2 PPP会话阶段</h2><p>PPP会话阶段包括<strong>LCP协商、PAP/CHAP认证、NCP协商</strong>等阶段。</p>
+<p><strong>LCP协商</strong><br><img src="/2022/09/06/PPPoE/image-20220906231947.png" alt="image-4" style="zoom:50%;"><br>进入PPP会话阶段之后，首先进行LCP协商，LCP协商过程如下：</p>
+<ol>
+<li> PPPoE Client与PPPoE Server互相发送LCP Configure-Request报文。</li>
+<li>双方收到Configure-Request报文后，根据报文中协商选项支持情况做出适当的回应（请参见下表）。若两端都回应了Configure-ACK，则标志LCP链路建立成功，否则会继续发送Request报文： <ul>
+<li>  如果在设定的LCP协商间隔与协商次数内，对端回应了Configure-ACK，则LCP链路建立成功。</li>
+<li>  如果在超过了设定的LCP协商次数后，对端尚未回应Configure-ACK，则终止LCP协商。</li>
+</ul>
+</li>
+<li> LCP链路建立成功后，PPPoE Server会周期性地向PPPoE Client发送LCP Echo-Request报文，然后接收PPPoE Client回应的Echo-Reply报文，来探测LCP链路是否正常，以维持LCP连接。</li>
+</ol>
+<p><strong>PAP/CHAP认证</strong><br>LCP协商完成后，会进入认证阶段，可以通过PAP认证和CHAP认证两种认证方式实现。</p>
+<ul>
+<li>PAP认证：PAP为两次握手协议，是通过用户名和密码来对用户进行认证，并且是以明文的方式传递用户名和密码。</li>
+<li>CHAP认证：CHAP认证为三次握手协议，也是通过用户名和密码来对用户进行认证，但是加密传递用户密码。</li>
+</ul>
+<p><strong>NCP协商</strong><br><img src="/2022/09/06/PPPoE/image-20220906232153.png" alt="image-2" style="zoom:50%;"><br>NCP有很多种，如IPCP、BCP、IPv6CP，最为常用的是IPCP（Internet Protocol Control Protocol)协议。<br>NCP的主要功能是协商PPP报文的网络层参数，如IP地址，DNS Server IP地址，WINS Server IP地址等。<br>NCP流程与LCP流程类似，用户与接入设备之间互相发送NCP Config-Request报文并且互相回应NCP Config-Ack报文后，标志NCP己协商完，用户上线成功，可以正常访问网络了。 </p>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>
