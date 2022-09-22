@@ -1394,4 +1394,49 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>Pacman</title>
+    <url>/2022/09/22/Pacman/</url>
+    <content><![CDATA[<h1 id="1-软件管理命令"><a href="#1-软件管理命令" class="headerlink" title="1. 软件管理命令"></a>1. 软件管理命令</h1><h2 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h2><p><code>pacman -Sy</code>: 同步远程仓库中的软件包数据库</p>
+<p><code>pacman -Su</code>：升级所有”已安装的”软件包</p>
+<p><code>pacman -Syu</code>: 同步远程仓库中的软件包数据库，并升级所有”已安装的”软件包</p>
+<h2 id="安装软件"><a href="#安装软件" class="headerlink" title="安装软件"></a>安装软件</h2><p><code>pacman -S (软件名)</code>: 安装软件，若有多个软件包，空格分隔</p>
+<p><code>pacman -S --needed (软件名)</code>: 安装软件，若存在，不重新安装最新的软件</p>
+<p><code>pacman -Sv (软件名)</code>: 输出操作信息后安装</p>
+<p><code>pacman -U (软件名.pkg.tar.gz)</code>: 安装本地软件包</p>
+<p><code>pacman -U (http://www.xxx.com/xxx.pkg.tar.xz)</code>: 安装一个远程包</p>
+<h2 id="删除软件"><a href="#删除软件" class="headerlink" title="删除软件"></a>删除软件</h2><p><code>pacman -R (软件名)</code>: 只卸载软件包不卸载依赖的软件</p>
+<p><code>pacman -Rv (软件名)</code>: 卸载软件，并输出卸载信息</p>
+<p><code>pacman -Rs (软件名)</code>: 卸载软件，并同时卸载该软件的依赖软件</p>
+<p><code>pacman -Rsn (软件名)</code>: 卸载软件，并同时卸载该软件的依赖软件, 以及该软件的全局配置文件</p>
+<h2 id="搜索软件"><a href="#搜索软件" class="headerlink" title="搜索软件"></a>搜索软件</h2><blockquote>
+<p>Pacman使用-Q参数来查询本地软件包数据库<br>Pacman使用-S参数来查询远程同步的数据库</p>
+</blockquote>
+<p><code>pacman -S (软件名)</code>: 在仓库搜索软件包的准确名称</p>
+<p><code>pacman -Ss (关键字)</code>: 在仓库搜索包含关键字的软件包, -s是开启内置的正则表达式</p>
+<p><code>pacman -Sl</code>: 显示软件仓库所有软件的列表</p>
+<p><code>pacman -Si (软件名)</code>: 在远程仓库中查看软件包的详细信息</p>
+<p><code>pacman -Q (软件名)</code>: 查看软件包是否已安装</p>
+<p><code>pacman -Qs (关键字)</code>: 正则表达式搜索已安装的软件包</p>
+<p><code>pacman -Qu</code>: 列出可升级的软件包</p>
+<p><code>pacman -Qi (软件包)</code>: 查看某个已安装软件包详细信息</p>
+<p><code>pacman -Ql (软件名)</code>: 列出软件包所有文件安装路径</p>
+<p><code>pacman -Qdt</code>: 列出所有目前不被需要的依赖软件</p>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h2><p><code>pacman -Sw (软件名)</code>: 只下载软件包，而不安装<br><code>pacman -Qc</code>: 清理当前已下载但未被安装软件包的缓存(所有软件包都在/var/cache/pacman/pkg)</p>
+<p><code>pacman -R $(pacman -Qdtq)</code>: 删除所有目前不被需要的依赖软件</p>
+<h1 id="2-Pacman相关"><a href="#2-Pacman相关" class="headerlink" title="2. Pacman相关"></a>2. Pacman相关</h1><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>pacman的配置文件: <code>/etc/pacman.conf</code></p>
+<p>官方镜像配置文件: <code>/etc/pacman.d/mirrorlist</code></p>
+<p>pacman下载的软件包存放路径: <code>/var/chache/pacman/pkg</code></p>
+<h2 id="修改镜像源"><a href="#修改镜像源" class="headerlink" title="修改镜像源"></a>修改镜像源</h2><p><code>pacman-mirrors -i -c China -m rank</code></p>
+<h2 id="添加仓库"><a href="#添加仓库" class="headerlink" title="添加仓库"></a>添加仓库</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim /etc/pacman.conf</span><br><span class="line"></span><br><span class="line">[archlinuxcn]</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
+<p><code>pacman-mirrors -g</code>: 生成镜像列表</p>
+<p><code>pacman -S archlinuxcn-keyring</code>: 安装 archlinuxcn-keyring 包以导入 GPG key</p>
+<blockquote>
+<p>Note: archlinuxcn是整合了国内优秀开发者软件的”AUR”</p>
+</blockquote>
+]]></content>
+      <categories>
+        <category>Linux</category>
+      </categories>
+  </entry>
 </search>
