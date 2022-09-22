@@ -1422,7 +1422,7 @@
 <p><code>pacman -Qi (软件包)</code>: 查看某个已安装软件包详细信息</p>
 <p><code>pacman -Ql (软件名)</code>: 列出软件包所有文件安装路径</p>
 <p><code>pacman -Qdt</code>: 列出所有目前不被需要的依赖软件</p>
-<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h2><p><code>pacman -Sw (软件名)</code>: 只下载软件包，而不安装<br><code>pacman -Qc</code>: 清理当前已下载但未被安装软件包的缓存(所有软件包都在/var/cache/pacman/pkg)</p>
+<h2 id="Tips"><a href="#Tips" class="headerlink" title="Tips:"></a>Tips:</h2><p><code>pacman -Sw (软件名)</code>: 只下载软件包，而不安装<br><code>pacman -Sc</code>: 清理当前已下载但未被安装软件包的缓存(所有软件包都在/var/cache/pacman/pkg)</p>
 <p><code>pacman -R $(pacman -Qdtq)</code>: 删除所有目前不被需要的依赖软件</p>
 <h1 id="2-Pacman相关"><a href="#2-Pacman相关" class="headerlink" title="2. Pacman相关"></a>2. Pacman相关</h1><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>pacman的配置文件: <code>/etc/pacman.conf</code></p>
 <p>官方镜像配置文件: <code>/etc/pacman.d/mirrorlist</code></p>
