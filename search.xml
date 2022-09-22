@@ -1427,9 +1427,12 @@
 <h1 id="2-Pacman相关"><a href="#2-Pacman相关" class="headerlink" title="2. Pacman相关"></a>2. Pacman相关</h1><h2 id="配置文件"><a href="#配置文件" class="headerlink" title="配置文件"></a>配置文件</h2><p>pacman的配置文件: <code>/etc/pacman.conf</code></p>
 <p>官方镜像配置文件: <code>/etc/pacman.d/mirrorlist</code></p>
 <p>pacman下载的软件包存放路径: <code>/var/chache/pacman/pkg</code></p>
+<h2 id="Pacman的仓库和镜像"><a href="#Pacman的仓库和镜像" class="headerlink" title="Pacman的仓库和镜像"></a>Pacman的仓库和镜像</h2><p><strong>定义仓库</strong><br>Besides the special [options] section, each other [section] in <code>pacman.conf</code> defines a package repository to be used. A repository is a logical collection of packages, which are physically stored on one or more servers: for this reason each server is called a mirror for the repository.</p>
+<p><strong>遍历仓库规则</strong><br>Repositories are distinguished between official and unofficial. The order of repositories in the configuration file matters; repositories listed first will take precedence over those listed later in the file when packages in two repositories have identical names, regardless of version number. In order to use a repository after adding it, you will need to upgrade the whole system first.</p>
+<p><strong>定义镜像</strong><br>Each repository section allows defining the list of its mirrors directly or in a dedicated external file through the Include directive; for example, the mirrors for the official repositories are included from <code>/etc/pacman.d/mirrorlist</code>.</p>
 <h2 id="修改镜像源"><a href="#修改镜像源" class="headerlink" title="修改镜像源"></a>修改镜像源</h2><p><code>pacman-mirrors -i -c China -m rank</code></p>
 <h2 id="添加仓库"><a href="#添加仓库" class="headerlink" title="添加仓库"></a>添加仓库</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">vim /etc/pacman.conf</span><br><span class="line"></span><br><span class="line">[archlinuxcn]</span><br><span class="line">Server = https://mirrors.ustc.edu.cn/archlinuxcn/$arch</span><br></pre></td></tr></table></figure>
-<p><code>pacman-mirrors -g</code>: 生成镜像列表</p>
+<p><code>pacman-mirrors -g</code>: 查看active的镜像列表</p>
 <p><code>pacman -S archlinuxcn-keyring</code>: 安装 archlinuxcn-keyring 包以导入 GPG key</p>
 <blockquote>
 <p>Note: archlinuxcn是整合了国内优秀开发者软件的”AUR”</p>
