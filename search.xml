@@ -1442,4 +1442,42 @@
         <category>Linux</category>
       </categories>
   </entry>
+  <entry>
+    <title>VLAN Port Mode -- Access/Trunk/Hybird</title>
+    <url>/2022/09/26/VLAN-Port-Mode-Access-Trunk-Hybird/</url>
+    <content><![CDATA[<p>交换机二层VLAN接口有三种工作模式: <code>Access</code>,  <code>Trunk</code>, <code>Hybird</code>, 如果将这三种工作模式用一个<strong>统一的数据VLAN标签处理模型</strong>表示，可用如下模型：</p>
+<p><img src="/2022/09/26/VLAN-Port-Mode-Access-Trunk-Hybird/image-20220926160520565.png" alt="image-20220926160520565"></p>
+<table>
+<thead>
+<tr>
+<th align="left">工作模式</th>
+<th align="left">模型理解</th>
+<th align="left">入向理解</th>
+<th align="left">出向理解</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Access</td>
+<td align="left">仅有PVID的接口</td>
+<td align="left">入向Allow range = PVID</td>
+<td align="left">出向一定是Untagged流量</td>
+</tr>
+<tr>
+<td align="left">Trunk</td>
+<td align="left">有PVID，Tagged的接口</td>
+<td align="left">入向Allow range = PVID + Tagged</td>
+<td align="left">出向除了PVID，都是Tagged流量</td>
+</tr>
+<tr>
+<td align="left">Hybird</td>
+<td align="left">有PVID，Tagged，Untagged的接口</td>
+<td align="left">入向Allow range = PVID + Tagged + Untagged</td>
+<td align="left">出向根据模型进行标签处理</td>
+</tr>
+</tbody></table>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>
