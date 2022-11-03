@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述：SSH的工作过程，以及SSH的使用技巧">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SSH介绍与使用">
+<meta property="og:url" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/index.html">
+<meta property="og:site_name" content="Cc&#39;s Blog">
+<meta property="og:description" content="概述：SSH的工作过程，以及SSH的使用技巧">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103155628.png">
+<meta property="og:image" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103161555.png">
+<meta property="og:image" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103162046.png">
+<meta property="og:image" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103163121.png">
+<meta property="article:published_time" content="2022-11-03T09:23:21.000Z">
+<meta property="article:modified_time" content="2022-11-03T09:31:02.506Z">
+<meta property="article:author" content="Cheng Chen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103155628.png">
+
+
+<link rel="canonical" href="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/","path":"2022/11/03/SSH介绍与使用/","title":"SSH介绍与使用"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SSH介绍与使用 | Cc's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay Simple</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SSH%E7%AE%80%E4%BB%8B"><span class="nav-text">1. SSH简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SSH%E5%90%84%E7%BB%84%E4%BB%B6%E4%BD%9C%E7%94%A8"><span class="nav-text">2. SSH各组件作用</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#2-1-SSH%E4%BC%A0%E8%BE%93%E5%B1%82"><span class="nav-text">2.1 SSH传输层</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-2-SSH%E7%94%A8%E6%88%B7%E8%AE%A4%E8%AF%81"><span class="nav-text">2.2 SSH用户认证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-3-SSH%E8%BF%9E%E6%8E%A5"><span class="nav-text">2.3 SSH连接</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SSH%E5%B7%A5%E4%BD%9C%E8%BF%87%E7%A8%8B"><span class="nav-text">3. SSH工作过程</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SSH%E7%9B%B8%E5%85%B3"><span class="nav-text">4. SSH相关</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-SSH%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">4.1 SSH配置文件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%9F%BA%E4%BA%8E%E5%AF%86%E9%92%A5%E8%AE%A4%E8%AF%81%E5%85%8D%E5%AF%86%E7%A0%81%E7%99%BB%E9%99%86"><span class="nav-text">4.2 基于密钥认证免密码登陆</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheng Chen"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Cheng Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Cheng Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cc's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SSH介绍与使用 | Cc's Blog">
+      <meta itemprop="description" content="概述：SSH的工作过程，以及SSH的使用技巧">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SSH介绍与使用
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-11-03 17:23:21 / Modified: 17:31:02" itemprop="dateCreated datePublished" datetime="2022-11-03T17:23:21+08:00">2022-11-03</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Networking/" itemprop="url" rel="index"><span itemprop="name">Networking</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">概述：SSH的工作过程，以及SSH的使用技巧</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-SSH简介"><a href="#1-SSH简介" class="headerlink" title="1. SSH简介"></a>1. SSH简介</h1><p>SSH(Secure Shell，安全外壳协议)，是一种在网络上实现<strong>远程登录</strong>以及<strong>可用来为其他网络服务</strong>提供底层通道。</p>
+<p>SSH协议有三个组件构成: SSH传输层，SSH用户认证，SSH连接</p>
+<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103155628.png" alt="image-20221103155628.png" style="zoom:50%;">
+
+<hr>
+<h1 id="2-SSH各组件作用"><a href="#2-SSH各组件作用" class="headerlink" title="2. SSH各组件作用"></a>2. SSH各组件作用</h1><h2 id="2-1-SSH传输层"><a href="#2-1-SSH传输层" class="headerlink" title="2.1 SSH传输层"></a>2.1 SSH传输层</h2><ul>
+<li>SSH传输层通常也是建立在TCP/IP连接上(TCP三次握手之后进入SSH传输层协商阶段)</li>
+<li>SSH传输层用来协商接下来两个组件中需要用到的所有密码学“算法”，这些算法包括:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">算法类别</th>
+<th align="left">算法功能</th>
+<th align="left">算法示例</th>
+<th align="left">算法作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">密钥交换算法</td>
+<td align="left">用于产生会话密钥</td>
+<td align="left">diffle-hellman-group14-sha1, diffie-hellman-group1-sha1…</td>
+<td align="left">用来生成对称加密算法的密钥</td>
+</tr>
+<tr>
+<td align="left">非对称加密算法</td>
+<td align="left">用于进行用户认证</td>
+<td align="left">ssh-rsa, ssh-dss…</td>
+<td align="left">用于”SSH用户认证”组件中的用户身份密钥认证</td>
+</tr>
+<tr>
+<td align="left">对称加密算法</td>
+<td align="left">用于会话的加密</td>
+<td align="left">aes128-ctr, 3des-cbc…</td>
+<td align="left">用于”SSH用户认证””SSH连接”的数据包加密</td>
+</tr>
+<tr>
+<td align="left">消息认证算法</td>
+<td align="left">用于数据完整性认证</td>
+<td align="left">hmac-sha1, hmac-md5…</td>
+<td align="left">哈希算法验证数据完整性</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-SSH用户认证"><a href="#2-2-SSH用户认证" class="headerlink" title="2.2 SSH用户认证"></a>2.2 SSH用户认证</h2><ul>
+<li>SSH用户认证为服务器提供客户端的用户身份认证。它运行在传输层协议之上(算法协商完毕，对称加密密钥生成完毕之后，进行SSH用户认证)</li>
+<li>SSH用户认证提供两种认证方法：<ul>
+<li>口令认证：客户端通过<strong>用户名和密码</strong>登录到服务器，完成用户认证。</li>
+<li>公钥认证：客户端通过发送<strong>用户名和数字签名</strong>到服务器，完成用户认证。<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103161555.png" alt="image-20221103161555.png" style="zoom: 50%;"></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-SSH连接"><a href="#2-3-SSH连接" class="headerlink" title="2.3 SSH连接"></a>2.3 SSH连接</h2><ul>
+<li>SSH连接运行在SSH传输层和SSH用户认证协议之上。</li>
+<li>SSH连接用于将加密的SSH会话多路复用成若干个逻辑通道。<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103162046.png" alt="image-20221103162046.png" style="zoom:33%;"></li>
+</ul>
+<blockquote>
+<p><strong>TCP/IP转发通道</strong>: SSH隧道转发，使用ssh会话传输其他应用层协议报文。<br><strong>X11通道</strong>: Linux图形化界面是有X11实现的，服务器可以使用SSH会话传输图形化界面到远程客户端<br><strong>会话通道</strong>: 用于进行交互式登陆回话，远程执行命令。<br><strong>SFTP通道</strong>: 用于远程操控服务器上的文件，进行上传/下载/删除</p>
+</blockquote>
+<hr>
+<h1 id="3-SSH工作过程"><a href="#3-SSH工作过程" class="headerlink" title="3. SSH工作过程"></a>3. SSH工作过程</h1><img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103163121.png" alt="image-20221103163121.png" style="zoom:50%;">
+
+<p>整个SSH通讯过程，根据3个组件，服务器与客户端需要经历7个阶段</p>
+<ul>
+<li>传输层：<ol>
+<li><strong>连接建立阶段</strong>：SSH服务器在指定的端口侦听客户端的连接请求，在客户端向服务器发起连接请求后，双方建立一个TCP连接。</li>
+<li><strong>版本协商阶段</strong>：SSH协议目前存在SSH1.X（SSH2.0之前的版本）和SSH2.0版本。SSH2.0协议相比SSH1.X协议来说，在结构上做了扩展，可以支持更多的认证方法和密钥交换方法，同时提高了服务能力。SSH服务器和客户端通过协商确定最终使用的SSH版本号。</li>
+<li><strong>算法协商阶段</strong>：协商出一套用于3/4/5阶段的加密算法组合，SSH支持多种加密算法，双方根据各自支持的算法，协商出最终用于产生会话密钥的密钥交换算法、用于数据信息加密的加密算法、用于进行数字签名和认证的公钥算法以及用于数据完整性保护的HMAC算法。</li>
+<li><strong>密钥交换阶段</strong>：通过密钥交换算法(2阶段协商出来的)生成4/5阶段需要使用的会话密钥(对称加密的密钥)以及会话ID。4/5阶段双方的会话均通过这个密钥加密，会话ID用于在认证过程中标识该SSH连接。</li>
+</ol>
+</li>
+<li>用户认证:<ol start="5">
+<li><strong>用户认证阶段</strong>：SSH客户端向服务器端发起认证请求，服务器端对客户端进行认证。SSH支持以下几种认证方式：<ul>
+<li>  密码（password）认证：客户端通过用户名和密码的方式进行认证，将加密后的用户名和密码发送给服务器，服务器解密后与本地保存的用户名和密码进行对比，并向客户端返回认证成功或失败的消息。</li>
+<li>  密钥（publickey）认证：客户端通过用户名，公钥以及公钥算法等信息来与服务器进行认证。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>SSH连接：<ol start="6">
+<li><strong>会话请求阶段</strong>：认证通过后，SSH客户端向服务器端发送会话请求，请求服务器提供某种类型的服务，即请求与服务器建立相应的会话。</li>
+<li><strong>会话交互阶段</strong>：认证通过后，服务器和客户端进行信息的交互。</li>
+</ol>
+</li>
+</ul>
+<h1 id="4-SSH相关"><a href="#4-SSH相关" class="headerlink" title="4. SSH相关"></a>4. SSH相关</h1><h2 id="4-1-SSH配置文件"><a href="#4-1-SSH配置文件" class="headerlink" title="4.1 SSH配置文件"></a>4.1 SSH配置文件</h2><p><strong>客户端配置文件</strong><br>/etc/ssh/ssh_config</p>
+<p><strong>服务器端配置文件</strong><br>/etc/ssh/sshd_config</p>
+<h2 id="4-2-基于密钥认证免密码登陆"><a href="#4-2-基于密钥认证免密码登陆" class="headerlink" title="4.2 基于密钥认证免密码登陆"></a>4.2 基于密钥认证免密码登陆</h2><ol>
+<li><p>在客户端生成公私钥对<br><code># ssh-keygen -t RSA</code>  // 生成密钥对，指定加密方式为RSA，生成密钥对默认放在～/.ssh中</p>
+</li>
+<li><p>把客户端的公钥放到服务器对应User的home目录<br>方法1: <code>手动在服务器端创建~/.ssh/authorized_keys文件，将客户端公钥复制进去，并保证文件权限为600</code><br>方法2: <code># ssh-copy-id -i ~/.ssh/PUBKEY.pub USER@HOST</code> // -i 客户端公钥路径，ssh-copy-id 实际上做了一样的事情，就是将客户端生成的公钥传输到了服务器端的~/.ssh/authorized_keys中</p>
+</li>
+<li><p>在客户端实现免密登陆<br><code># ssh -i ~/.ssh/privatekey  USER@HOST</code></p>
+</li>
+</ol>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/09/26/VLAN-Port-Mode-Access-Trunk-Hybird/" rel="prev" title="VLAN Port Mode -- Access/Trunk/Hybird">
+                  <i class="fa fa-chevron-left"></i> VLAN Port Mode -- Access/Trunk/Hybird
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheng Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

@@ -1480,4 +1480,106 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>SSH介绍与使用</title>
+    <url>/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="1-SSH简介"><a href="#1-SSH简介" class="headerlink" title="1. SSH简介"></a>1. SSH简介</h1><p>SSH(Secure Shell，安全外壳协议)，是一种在网络上实现<strong>远程登录</strong>以及<strong>可用来为其他网络服务</strong>提供底层通道。</p>
+<p>SSH协议有三个组件构成: SSH传输层，SSH用户认证，SSH连接</p>
+<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103155628.png" alt="image-20221103155628.png" style="zoom:50%;">
+
+<hr>
+<h1 id="2-SSH各组件作用"><a href="#2-SSH各组件作用" class="headerlink" title="2. SSH各组件作用"></a>2. SSH各组件作用</h1><h2 id="2-1-SSH传输层"><a href="#2-1-SSH传输层" class="headerlink" title="2.1 SSH传输层"></a>2.1 SSH传输层</h2><ul>
+<li>SSH传输层通常也是建立在TCP/IP连接上(TCP三次握手之后进入SSH传输层协商阶段)</li>
+<li>SSH传输层用来协商接下来两个组件中需要用到的所有密码学“算法”，这些算法包括:</li>
+</ul>
+<table>
+<thead>
+<tr>
+<th align="left">算法类别</th>
+<th align="left">算法功能</th>
+<th align="left">算法示例</th>
+<th align="left">算法作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">密钥交换算法</td>
+<td align="left">用于产生会话密钥</td>
+<td align="left">diffle-hellman-group14-sha1, diffie-hellman-group1-sha1…</td>
+<td align="left">用来生成对称加密算法的密钥</td>
+</tr>
+<tr>
+<td align="left">非对称加密算法</td>
+<td align="left">用于进行用户认证</td>
+<td align="left">ssh-rsa, ssh-dss…</td>
+<td align="left">用于”SSH用户认证”组件中的用户身份密钥认证</td>
+</tr>
+<tr>
+<td align="left">对称加密算法</td>
+<td align="left">用于会话的加密</td>
+<td align="left">aes128-ctr, 3des-cbc…</td>
+<td align="left">用于”SSH用户认证””SSH连接”的数据包加密</td>
+</tr>
+<tr>
+<td align="left">消息认证算法</td>
+<td align="left">用于数据完整性认证</td>
+<td align="left">hmac-sha1, hmac-md5…</td>
+<td align="left">哈希算法验证数据完整性</td>
+</tr>
+</tbody></table>
+<h2 id="2-2-SSH用户认证"><a href="#2-2-SSH用户认证" class="headerlink" title="2.2 SSH用户认证"></a>2.2 SSH用户认证</h2><ul>
+<li>SSH用户认证为服务器提供客户端的用户身份认证。它运行在传输层协议之上(算法协商完毕，对称加密密钥生成完毕之后，进行SSH用户认证)</li>
+<li>SSH用户认证提供两种认证方法：<ul>
+<li>口令认证：客户端通过<strong>用户名和密码</strong>登录到服务器，完成用户认证。</li>
+<li>公钥认证：客户端通过发送<strong>用户名和数字签名</strong>到服务器，完成用户认证。<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103161555.png" alt="image-20221103161555.png" style="zoom: 50%;"></li>
+</ul>
+</li>
+</ul>
+<h2 id="2-3-SSH连接"><a href="#2-3-SSH连接" class="headerlink" title="2.3 SSH连接"></a>2.3 SSH连接</h2><ul>
+<li>SSH连接运行在SSH传输层和SSH用户认证协议之上。</li>
+<li>SSH连接用于将加密的SSH会话多路复用成若干个逻辑通道。<img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103162046.png" alt="image-20221103162046.png" style="zoom:33%;"></li>
+</ul>
+<blockquote>
+<p><strong>TCP/IP转发通道</strong>: SSH隧道转发，使用ssh会话传输其他应用层协议报文。<br><strong>X11通道</strong>: Linux图形化界面是有X11实现的，服务器可以使用SSH会话传输图形化界面到远程客户端<br><strong>会话通道</strong>: 用于进行交互式登陆回话，远程执行命令。<br><strong>SFTP通道</strong>: 用于远程操控服务器上的文件，进行上传/下载/删除</p>
+</blockquote>
+<hr>
+<h1 id="3-SSH工作过程"><a href="#3-SSH工作过程" class="headerlink" title="3. SSH工作过程"></a>3. SSH工作过程</h1><img src="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/image-20221103163121.png" alt="image-20221103163121.png" style="zoom:50%;">
+
+<p>整个SSH通讯过程，根据3个组件，服务器与客户端需要经历7个阶段</p>
+<ul>
+<li>传输层：<ol>
+<li><strong>连接建立阶段</strong>：SSH服务器在指定的端口侦听客户端的连接请求，在客户端向服务器发起连接请求后，双方建立一个TCP连接。</li>
+<li><strong>版本协商阶段</strong>：SSH协议目前存在SSH1.X（SSH2.0之前的版本）和SSH2.0版本。SSH2.0协议相比SSH1.X协议来说，在结构上做了扩展，可以支持更多的认证方法和密钥交换方法，同时提高了服务能力。SSH服务器和客户端通过协商确定最终使用的SSH版本号。</li>
+<li><strong>算法协商阶段</strong>：协商出一套用于3/4/5阶段的加密算法组合，SSH支持多种加密算法，双方根据各自支持的算法，协商出最终用于产生会话密钥的密钥交换算法、用于数据信息加密的加密算法、用于进行数字签名和认证的公钥算法以及用于数据完整性保护的HMAC算法。</li>
+<li><strong>密钥交换阶段</strong>：通过密钥交换算法(2阶段协商出来的)生成4/5阶段需要使用的会话密钥(对称加密的密钥)以及会话ID。4/5阶段双方的会话均通过这个密钥加密，会话ID用于在认证过程中标识该SSH连接。</li>
+</ol>
+</li>
+<li>用户认证:<ol start="5">
+<li><strong>用户认证阶段</strong>：SSH客户端向服务器端发起认证请求，服务器端对客户端进行认证。SSH支持以下几种认证方式：<ul>
+<li>  密码（password）认证：客户端通过用户名和密码的方式进行认证，将加密后的用户名和密码发送给服务器，服务器解密后与本地保存的用户名和密码进行对比，并向客户端返回认证成功或失败的消息。</li>
+<li>  密钥（publickey）认证：客户端通过用户名，公钥以及公钥算法等信息来与服务器进行认证。</li>
+</ul>
+</li>
+</ol>
+</li>
+<li>SSH连接：<ol start="6">
+<li><strong>会话请求阶段</strong>：认证通过后，SSH客户端向服务器端发送会话请求，请求服务器提供某种类型的服务，即请求与服务器建立相应的会话。</li>
+<li><strong>会话交互阶段</strong>：认证通过后，服务器和客户端进行信息的交互。</li>
+</ol>
+</li>
+</ul>
+<h1 id="4-SSH相关"><a href="#4-SSH相关" class="headerlink" title="4. SSH相关"></a>4. SSH相关</h1><h2 id="4-1-SSH配置文件"><a href="#4-1-SSH配置文件" class="headerlink" title="4.1 SSH配置文件"></a>4.1 SSH配置文件</h2><p><strong>客户端配置文件</strong><br>/etc/ssh/ssh_config</p>
+<p><strong>服务器端配置文件</strong><br>/etc/ssh/sshd_config</p>
+<h2 id="4-2-基于密钥认证免密码登陆"><a href="#4-2-基于密钥认证免密码登陆" class="headerlink" title="4.2 基于密钥认证免密码登陆"></a>4.2 基于密钥认证免密码登陆</h2><ol>
+<li><p>在客户端生成公私钥对<br><code># ssh-keygen -t RSA</code>  // 生成密钥对，指定加密方式为RSA，生成密钥对默认放在～/.ssh中</p>
+</li>
+<li><p>把客户端的公钥放到服务器对应User的home目录<br>方法1: <code>手动在服务器端创建~/.ssh/authorized_keys文件，将客户端公钥复制进去，并保证文件权限为600</code><br>方法2: <code># ssh-copy-id -i ~/.ssh/PUBKEY.pub USER@HOST</code> // -i 客户端公钥路径，ssh-copy-id 实际上做了一样的事情，就是将客户端生成的公钥传输到了服务器端的~/.ssh/authorized_keys中</p>
+</li>
+<li><p>在客户端实现免密登陆<br><code># ssh -i ~/.ssh/privatekey  USER@HOST</code></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>
