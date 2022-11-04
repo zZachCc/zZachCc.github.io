@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述：SNMP的介绍，以及SNMP如何使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SNMP">
+<meta property="og:url" content="http://example.com/2022/11/04/SNMP/index.html">
+<meta property="og:site_name" content="Cc&#39;s Blog">
+<meta property="og:description" content="概述：SNMP的介绍，以及SNMP如何使用">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221104115032.png">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221104112951.png">
+<meta property="article:published_time" content="2022-11-04T06:40:17.000Z">
+<meta property="article:modified_time" content="2022-11-04T06:43:41.710Z">
+<meta property="article:author" content="Cheng Chen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2022/11/04/SNMP/image-20221104115032.png">
+
+
+<link rel="canonical" href="http://example.com/2022/11/04/SNMP/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/04/SNMP/","path":"2022/11/04/SNMP/","title":"SNMP"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SNMP | Cc's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay Simple</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SNMP%E7%AE%80%E4%BB%8B"><span class="nav-text">1. SNMP简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SNMP%E7%9A%84%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. SNMP的管理模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SNMP%E7%89%88%E6%9C%AC"><span class="nav-text">3. SNMP版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SNMP%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C"><span class="nav-text">4. SNMP如何工作</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheng Chen"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Cheng Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">12</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/04/SNMP/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Cheng Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cc's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SNMP | Cc's Blog">
+      <meta itemprop="description" content="概述：SNMP的介绍，以及SNMP如何使用">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SNMP
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2022-11-04 14:40:17 / Modified: 14:43:41" itemprop="dateCreated datePublished" datetime="2022-11-04T14:40:17+08:00">2022-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Networking/" itemprop="url" rel="index"><span itemprop="name">Networking</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">概述：SNMP的介绍，以及SNMP如何使用</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-SNMP简介"><a href="#1-SNMP简介" class="headerlink" title="1. SNMP简介"></a>1. SNMP简介</h1><p>SNMP(Simple Network Management Protocol, 简单网络管理协议)，用于网络设备的管理。<br>网络设备种类多种多样，不同设备厂商提供的管理接口（如命令行接口）各不相同，这使得网络管理变得愈发复杂。<br>为解决这一问题，SNMP应运而生。SNMP作为广泛应用于TCP/IP网络的网络管理标准协议，提供了统一的接口，从而实现了不同种类和厂商的网络设备之间的统一管理。</p>
+<p><strong>SNMP的价值</strong></p>
+<ol>
+<li>网络管理员可以利用SNMP平台，对网络中的任意一台网络设备完成信息查询、配置修改和故障排查等工作，工作效率得以提高。</li>
+<li>屏蔽了设备间的物理差异，SNMP仅提供最基本的功能集，可以实现对不同设备的统一管理，管理成本低。</li>
+<li>设计简单、运行代价低，SNMP采用“尽可能简单”的设计思想，其在设备上添加的软件/硬件、报文的种类和报文的格式都非常简单，因而运行SNMP给设备造成的影响和代价都很小。</li>
+</ol>
+<hr>
+<h1 id="2-SNMP的管理模型"><a href="#2-SNMP的管理模型" class="headerlink" title="2. SNMP的管理模型"></a>2. SNMP的管理模型</h1><p>SNMP基本组件包括</p>
+<ul>
+<li>网络管理系统NMS(Network Management System)</li>
+<li>代理进程(Agent)</li>
+<li>被管对象(Managed Object)</li>
+<li>管理信息库MIB(Management Information Base)。</li>
+</ul>
+<p>如图所示他们共同构成SNMP的管理模型。<br><img src="/2022/11/04/SNMP/image-20221104115032.png" alt="image-20221104115032.png" style="zoom:50%;"></p>
+<p><strong>NMS</strong><br>NMS就是采用SNMP协议对网络设备进行管理/监视的系统，运行在NMS服务器上。NMS作为整个网络的网管中心，对设备进行管理。</p>
+<ul>
+<li>  NMS可以向设备上的Agent发出请求，查询或修改一个或多个具体的参数值。</li>
+<li>  NMS可以接收设备上的Agent主动发送的Trap信息，以获知被管理设备当前的状态。</li>
+</ul>
+<p><strong>Agent</strong><br>SNMP Agent是被管理网络设备中的一个代理进程，用于响应NMS的请求，并把请求数据回复给NMS</p>
+<ul>
+<li>  Agent接收到NMS的请求信息后，通过MIB表完成相应指令后，并把操作结果响应给NMS。</li>
+<li>  当设备发生故障或者其它事件时，设备会通过Agent主动发送信息给NMS，向NMS报告设备当前的状态变化。</li>
+</ul>
+<p><strong>Managed Object</strong><br>每一个设备都会包含多个被管理对象，比如hostname，Interface，OSPF配置参数集合都是一个被管理对象。</p>
+<p><strong>MIB</strong><br>管理信息库就是管理Managed Object所对应的数据库。MIB是一个按照层次结构组织的树状结构，每个Managed Object对应树形结构的一个叶子节点，拥有唯一的对象标识符(OID, Object Identifier)。<br>MIB数据库中定义了网络设备中Managed Object的一系列属性：对象的名称、对象的状态、对象的访问权限和对象的数据类型等。通过MIB，可以完成以下功能：</p>
+<ul>
+<li>  Agent通过查询MIB，可以获知设备当前的状态信息。</li>
+<li>  Agent通过修改MIB，可以设置设备的状态参数。</li>
+</ul>
+<p>SNMP的MIB采用树型结构，它的根在最上面，根没有名字。如下图所示的是MIB的一部分，每个OID对应于树中的一个Managed Object。<br><img src="/2022/11/04/SNMP/image-20221104112951.png" alt="image-20221104112951.png" style="zoom:50%;"></p>
+<ul>
+<li>OID可以是数字标识符，如system的OID为1.3.6.1.2.1.1，interfaces的OID为1.3.6.1.2.1.2。</li>
+<li>OID可以是名称标识符，如”sysName”</li>
+</ul>
+<p><strong>子树可以用该子树根节点的OID来标识。</strong>如以private为根节点的子树的OID为private的OID加上大括号，{1.3.6.1.4}。</p>
+<hr>
+<h1 id="3-SNMP版本"><a href="#3-SNMP版本" class="headerlink" title="3. SNMP版本"></a>3. SNMP版本</h1><p>SNMP有三种版本：SNMPv1，SNMPv2c和SNMPv3。</p>
+<p><strong>SNMPv1</strong></p>
+<ul>
+<li>使用(Community)来认证NMS的合法性(NMS和网络设备需要配置相同的Community)，Community其实就是一个口令。</li>
+<li>安全性较差，SNMP报文明文传输</li>
+<li>且返回报文的错误码也较少。</li>
+</ul>
+<p><strong>SNMPv2c</strong></p>
+<ul>
+<li>同样基于(Community)来认证NMS的合法性。</li>
+<li>同样安全性较差，SNMP报文明文传输。</li>
+<li>SNMPv2c引入了GetBulk和Inform操作。</li>
+<li>支持更多的标准错误码信息，支持更多的数据类型。</li>
+</ul>
+<p><strong>SNMPv3</strong></p>
+<ul>
+<li>提供了基于USM(User Security Module)的认证，就是使用用户名/密码来认证NMS的身份。</li>
+<li>提供了ACM(View-based Access Control Model)的访问控制，不同用户可以访问的MIB树中的范围(view)不同。</li>
+<li>提供数据加密，使用对称加密算法来加密SNMP报文的载荷。</li>
+</ul>
+<blockquote>
+<p>SNMPv3中用户拥有一个安全级别属性来对应ACM鉴权和数据加密。</p>
+<ul>
+<li>privacy: 鉴权且加密</li>
+<li>authentication: 只鉴权不加密</li>
+<li>noauthentication: 不鉴权不加密</li>
+</ul>
+</blockquote>
+<h1 id="4-SNMP如何工作"><a href="#4-SNMP如何工作" class="headerlink" title="4. SNMP如何工作"></a>4. SNMP如何工作</h1><p>每个被管理设备中都包含驻留在设备上的SNMP Agent进程、MIB和多个Managed Object。NMS通过与运行在被管理设备上的SNMP Agent交互，由SNMP Agent通过对设备端的MIB进行操作，完成NMS的指令。</p>
+<p>管理员需要向设备获取数据，所以SNMP提供了【读】操作；管理员需要向设备执行设置操作，所以SNMP提供了【写】操作；设备需要在重要状况改变的时候，向管理员通报事件的发生，所以SNMP提供了【Trap】操作。</p>
+<p>SNMP规定了几个操作类型：</p>
+<table>
+<thead>
+<tr>
+<th align="left">操作类型</th>
+<th align="left">描述</th>
+<th align="left">备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left">Get</td>
+<td align="left">Get操作可以从Agent中提取一个或多个参数值。</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">GetNext</td>
+<td align="left">GetNext操作可以从Agent中按照字典序提取下一个参数值。</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">GetBulk</td>
+<td align="left">GetBulk操作实现了NMS对被管理设备的信息群查询。</td>
+<td align="left">SNMPv1版本不支持GetBulk操作</td>
+</tr>
+<tr>
+<td align="left">Set</td>
+<td align="left">Set操作可以设置Agent的一个或多个参数值。</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">Response</td>
+<td align="left">Response操作可以返回一个或多个参数值，作为Get/Set的响应</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">Trap</td>
+<td align="left">Trap信息是Agent主动向NMS发出的信息，告知管理进程设备端出现的情况。</td>
+<td align="left">-</td>
+</tr>
+<tr>
+<td align="left">Inform</td>
+<td align="left">InformRequest也是被管理设备向NMS主动发送告警。与Trap告警不同的是，被管理设备发送Inform告警后，需要NMS回复InformResponse来进行确认。</td>
+<td align="left">SNMPv1版本不支持GetBulk操作</td>
+</tr>
+</tbody></table>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="SSH介绍与使用">
+                  <i class="fa fa-chevron-left"></i> SSH介绍与使用
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheng Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
