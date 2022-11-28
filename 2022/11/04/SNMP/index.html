@@ -27,13 +27,16 @@
 <meta property="og:site_name" content="Cc&#39;s Blog">
 <meta property="og:description" content="概述：SNMP的介绍，以及SNMP如何使用">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221104115032.png">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128113151437.png">
 <meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221104112951.png">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128115648832.png">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128120303473.png">
+<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128121136904.png">
 <meta property="article:published_time" content="2022-11-04T06:40:17.000Z">
-<meta property="article:modified_time" content="2022-11-04T06:43:41.710Z">
+<meta property="article:modified_time" content="2022-11-28T04:14:33.326Z">
 <meta property="article:author" content="Cheng Chen">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/11/04/SNMP/image-20221104115032.png">
+<meta name="twitter:image" content="http://example.com/2022/11/04/SNMP/image-20221128113151437.png">
 
 
 <link rel="canonical" href="http://example.com/2022/11/04/SNMP/">
@@ -119,7 +122,7 @@
       <div class="sidebar-panel-container">
         <!--noindex-->
         <div class="post-toc-wrap sidebar-panel">
-            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SNMP%E7%AE%80%E4%BB%8B"><span class="nav-text">1. SNMP简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SNMP%E7%9A%84%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. SNMP的管理模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SNMP%E7%89%88%E6%9C%AC"><span class="nav-text">3. SNMP版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SNMP%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C"><span class="nav-text">4. SNMP如何工作</span></a></li></ol></div>
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SNMP%E7%AE%80%E4%BB%8B"><span class="nav-text">1. SNMP简介</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SNMP%E7%9A%84%E7%AE%A1%E7%90%86%E6%A8%A1%E5%9E%8B"><span class="nav-text">2. SNMP的管理模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-SNMP%E7%89%88%E6%9C%AC"><span class="nav-text">3. SNMP版本</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-SNMP%E7%AB%AF%E5%8F%A3%E5%8F%B7"><span class="nav-text">4. SNMP端口号</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#5-SNMP%E5%A6%82%E4%BD%95%E5%B7%A5%E4%BD%9C"><span class="nav-text">5. SNMP如何工作</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#5-1-SNMP%E6%9F%A5%E8%AF%A2"><span class="nav-text">5.1 SNMP查询</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-2-SNMP%E8%AE%BE%E7%BD%AE"><span class="nav-text">5.2 SNMP设置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#5-3-SNMP%E9%80%9A%E7%9F%A5"><span class="nav-text">5.3 SNMP通知</span></a></li></ol></li></ol></div>
         </div>
         <!--/noindex-->
 
@@ -207,9 +210,15 @@
         <i class="far fa-calendar"></i>
       </span>
       <span class="post-meta-item-text">Posted on</span>
-      
 
-      <time title="Created: 2022-11-04 14:40:17 / Modified: 14:43:41" itemprop="dateCreated datePublished" datetime="2022-11-04T14:40:17+08:00">2022-11-04</time>
+      <time title="Created: 2022-11-04 14:40:17" itemprop="dateCreated datePublished" datetime="2022-11-04T14:40:17+08:00">2022-11-04</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar-check"></i>
+      </span>
+      <span class="post-meta-item-text">Edited on</span>
+      <time title="Modified: 2022-11-28 12:14:33" itemprop="dateModified" datetime="2022-11-28T12:14:33+08:00">2022-11-28</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -247,7 +256,7 @@
 <li>被管对象(Managed Object)</li>
 <li>管理信息库MIB(Management Information Base)。</li>
 </ul>
-<p>如图所示他们共同构成SNMP的管理模型。<br><img src="/2022/11/04/SNMP/image-20221104115032.png" alt="image-20221104115032.png" style="zoom:50%;"></p>
+<p>如图所示他们共同构成SNMP的管理模型。<br><img src="/2022/11/04/SNMP/image-20221128113151437.png" alt="image-20221104115032.png" style="zoom:50%;"></p>
 <p><strong>NMS</strong><br>NMS就是采用SNMP协议对网络设备进行管理/监视的系统，运行在NMS服务器上。NMS作为整个网络的网管中心，对设备进行管理。</p>
 <ul>
 <li>  NMS可以向设备上的Agent发出请求，查询或修改一个或多个具体的参数值。</li>
@@ -299,7 +308,11 @@
 <li>noauthentication: 不鉴权不加密</li>
 </ul>
 </blockquote>
-<h1 id="4-SNMP如何工作"><a href="#4-SNMP如何工作" class="headerlink" title="4. SNMP如何工作"></a>4. SNMP如何工作</h1><p>每个被管理设备中都包含驻留在设备上的SNMP Agent进程、MIB和多个Managed Object。NMS通过与运行在被管理设备上的SNMP Agent交互，由SNMP Agent通过对设备端的MIB进行操作，完成NMS的指令。</p>
+<hr>
+<h1 id="4-SNMP端口号"><a href="#4-SNMP端口号" class="headerlink" title="4. SNMP端口号"></a>4. SNMP端口号</h1><p>SNMP报文是普通的UDP报文，协议中规定有两个默认端口号：</p>
+<p><strong>端口号161</strong>：NMS发送Get、GetNext、GetBulk和Set时，使用UDP161作为DestPort。</p>
+<p><strong>端口号162</strong>：SNMP Agent向NMS发送Trap或Inform时，使用UDP162作为DestPort。</p>
+<h1 id="5-SNMP如何工作"><a href="#5-SNMP如何工作" class="headerlink" title="5. SNMP如何工作"></a>5. SNMP如何工作</h1><p>每个被管理设备中都包含驻留在设备上的SNMP Agent进程、MIB和多个Managed Object。NMS通过与运行在被管理设备上的SNMP Agent交互，由SNMP Agent通过对设备端的MIB进行操作，完成NMS的指令。</p>
 <p>管理员需要向设备获取数据，所以SNMP提供了【读】操作；管理员需要向设备执行设置操作，所以SNMP提供了【写】操作；设备需要在重要状况改变的时候，向管理员通报事件的发生，所以SNMP提供了【Trap】操作。</p>
 <p>SNMP规定了几个操作类型：</p>
 <table>
@@ -346,6 +359,34 @@
 <td align="left">SNMPv1版本不支持GetBulk操作</td>
 </tr>
 </tbody></table>
+<h2 id="5-1-SNMP查询"><a href="#5-1-SNMP查询" class="headerlink" title="5.1 SNMP查询"></a>5.1 SNMP查询</h2><p>操作类型为Get、GetNext和GetBulk</p>
+<img src="/2022/11/04/SNMP/image-20221128115648832.png" alt="image-20221104115032.png" style="zoom:50%;">
+
+<ol>
+<li>NMS向SNMP Agent发送Get请求报文。请求报文PDU中PDU类型为Get类型，绑定变量填入MIB节点名sysContact。</li>
+<li>SNMP Agent首先对报文中携带的认证信息进行认证，认证成功后，SNMP Agent根据请求查询MIB中的sysContact节点，得到sysContact的值并将其封装到Response报文中的PDU，向NMS发送响应；如果查询不成功，SNMP Agent会向NMS发送出错响应。</li>
+</ol>
+<h2 id="5-2-SNMP设置"><a href="#5-2-SNMP设置" class="headerlink" title="5.2 SNMP设置"></a>5.2 SNMP设置</h2><p>操作类型为Set</p>
+<img src="/2022/11/04/SNMP/image-20221128120303473.png" alt="image-20221128120303473" style="zoom:50%;">
+
+<ol>
+<li>NMS向SNMP Agent发送Set请求报文，请求报文PDU类型为Set，绑定变量填入MIB节点名sysName和需要设置的值“Value”。</li>
+<li>SNMP Agent首先对报文中携带的认证信息进行认证，认证成功后，SNMP Agent根据请求设置管理变量在管理信息库MIB中对应的节点，设置成功后向NMS发送响应；如果设置不成功，Agent会向NMS发送出错响应。</li>
+</ol>
+<h2 id="5-3-SNMP通知"><a href="#5-3-SNMP通知" class="headerlink" title="5.3 SNMP通知"></a>5.3 SNMP通知</h2><p>操作类型为Trap和Inform</p>
+<img src="/2022/11/04/SNMP/image-20221128121136904.png" alt="image-20221128121136904" style="zoom:50%;">
+
+<p><strong>Trap</strong></p>
+<p>Trap不属于NMS对被管理设备的基本操作，它是被管理设备的自发行为。当被管理设备达到告警的触发条件时，会通过SNMP Agent向NMS发送Trap消息，告知设备侧出现的异常情况，便于网络管理人员及时处理。例如被管理设备热启动后，SNMP Agent会向NMS发送warmStart的Trap。</p>
+<p>这种Trap信息是受限制的。只有在设备端的模块达到模块预定义的告警触发条件时，SNMP Agent才会向管理进程报告。这种方法的好处是仅在严重事件发生时才发送Trap信息，减少报文交互产生的流量</p>
+<p><strong>Inform</strong></p>
+<p>Inform操作也是被管理设备向NMS主动发送告警。与Trap告警不同的是，被管理设备发送Inform告警后，需要NMS进行接收确认。如果被管理设备没有收到确认信息则：</p>
+<ol>
+<li>将告警或事件暂时保存在Inform缓存中。</li>
+<li>重复发送该告警或事件，直到NMS确认收到该告警或者发送次数达到最大重传次数。</li>
+<li>被管设备上会生成相应的告警或事件日志。</li>
+</ol>
+<p>由此可知，使用Inform操作会占用较多的系统资源。</p>
 
     </div>
 
