@@ -1736,4 +1736,62 @@
         <category>Networking</category>
       </categories>
   </entry>
+  <entry>
+    <title>ICMP</title>
+    <url>/2023/03/02/ICMP/</url>
+    <content><![CDATA[<h2 id="1-什么是ICMP？"><a href="#1-什么是ICMP？" class="headerlink" title="1. 什么是ICMP？"></a>1. 什么是ICMP？</h2><ul>
+<li>ICMP（Internet Control Message Protocol）因特网控制报文协议</li>
+<li>ICMP存在的目的是为IP协议提供一个差错报告机制</li>
+<li>ICMP属于网络层协议，==ICMP外面直接封装IP报头==</li>
+<li>ICMP主要用于在IP主机和路由器之间传递控制信息，用于报告主机是否可达、路由是否可达</li>
+</ul>
+<h2 id="2-为什么需要ICMP？"><a href="#2-为什么需要ICMP？" class="headerlink" title="2. 为什么需要ICMP？"></a>2. 为什么需要ICMP？</h2><ul>
+<li>因为IP是一个无连接的协议，不提供流量控制和差错控制机制。</li>
+<li>为了检查三层网络中的错误，IP协议没有能力提供协议层面上的支持，所以需要一个协议实现。</li>
+<li>ICMP应运而生，ICMP协议中，有错误反馈字段，所以在协议层面提供了==三层可达性检测的能力== (1. 确认目的IP是否可达 2. 如不可达，通知源端主机IP包被丢弃的原因)</li>
+</ul>
+<h2 id="3-ICMP的工作原理"><a href="#3-ICMP的工作原理" class="headerlink" title="3. ICMP的工作原理"></a>3. ICMP的工作原理</h2><ul>
+<li>从技术角度来说，ICMP就是一个差错报告机制，其工作机理也比较简单，即当数据包处理过程出现差错时，ICMP向数据包的==源端设备==报告这个差错，它不会纠正这个差错。</li>
+<li>源端在收到差错报告后，源端不能判断差错是由中间哪个网络设备所引起的，但是却可以根据ICMP报文确定发生错误的类型。</li>
+</ul>
+<h2 id="4-ICMP报文格式"><a href="#4-ICMP报文格式" class="headerlink" title="4. ICMP报文格式"></a>4. ICMP报文格式</h2><img src="/2023/03/02/ICMP/image-20220702192642.png" alt="image-1" style="zoom:50%;">
+
+<p>ICMP报文格式如图所示，==ICMP报文==其实是作为 “IP数据包” 的 “数据部分” 封装在 “IP数据包” 内部</p>
+<p>ICMP包头中包含的三个固定字段(Type, Code, Checksum)就是源端主机用来确定“三层网络错误”的类型的主要依据。</p>
+<ul>
+<li>  Type字段表示ICMP消息的类型；</li>
+<li>  Code字段表示ICMP消息的类型 二级细分的子类型；</li>
+<li>  Checksum字段表示ICMP报文的校验和。</li>
+</ul>
+<p>不同的Type和Code值表示不同的ICMP报文类型，对应了数据包处理过程中可能出现的不同错误情况</p>
+<p><img src="/2023/03/02/ICMP/image-20220702193501.png" alt="image-1"></p>
+<blockquote>
+<p><strong>ICMP报文类型的一些既定规则</strong></p>
+<ol>
+<li>ICMP查询报文会产生ICMP差错报文</li>
+<li>ICMP差错报文不会再产生ICMP差错报文</li>
+<li>目的地址是广播地址或多播地址的IP数据报文不会产生ICMP差错报文</li>
+<li>二层广播的数据包不会产生ICMP差错报文</li>
+<li>不是IP分片的第一片不会产生ICMP差错报文</li>
+<li>源地址不是单播IP的数据包(零地址、环回地址、广播地址或多播地址)不会产生ICMP差错报文</li>
+</ol>
+</blockquote>
+<h2 id="5-ICMP的典型应用"><a href="#5-ICMP的典型应用" class="headerlink" title="5. ICMP的典型应用"></a>5. ICMP的典型应用</h2><p>应用程序基于ICMP报文可以实现多种应用，其中Ping程序和Tracert（Traceroute）程序最为常见。</p>
+<h3 id="1-Ping"><a href="#1-Ping" class="headerlink" title="1] Ping"></a>1] Ping</h3><p>Ping程序用于检测IP网络设备的三层可达性，它使用ICMP的==echo Request 和 echo Reply 和 Destination Unreachable 报文==可以确定：</p>
+<ul>
+<li>远程设备是否可达</li>
+<li>与远程主机通信的来回旅程（TTL）的延迟</li>
+<li>报文包的丢失情况</li>
+</ul>
+<h3 id="2-Tracert"><a href="#2-Tracert" class="headerlink" title="2] Tracert"></a>2] Tracert</h3><p>Tracert程序主要用于查看数据包从源端到目的端的路径信息，当网络出现故障时，用户可以使用该命令定位故障点</p>
+<p>Tracert利用ICMP==echo Request 和 echo Reply 和 Destination Unreachable 和 ICMP超时 报文==可以确定：</p>
+<ul>
+<li>从一个主机到网络上其他主机的三层路径</li>
+<li>并显示IP网络中每一跳的延迟</li>
+</ul>
+]]></content>
+      <categories>
+        <category>Networking</category>
+      </categories>
+  </entry>
 </search>
