@@ -23,27 +23,27 @@
     <meta name="description" content="概述：SNMP的介绍，以及SNMP如何使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="SNMP">
-<meta property="og:url" content="http://example.com/2022/11/04/SNMP/index.html">
+<meta property="og:url" content="http://example.com/2023/03/29/SNMP/index.html">
 <meta property="og:site_name" content="Cc&#39;s Blog">
 <meta property="og:description" content="概述：SNMP的介绍，以及SNMP如何使用">
 <meta property="og:locale" content="en_US">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128113151437.png">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221104112951.png">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128115648832.png">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128120303473.png">
-<meta property="og:image" content="http://example.com/2022/11/04/SNMP/image-20221128121136904.png">
-<meta property="article:published_time" content="2022-11-04T06:40:17.000Z">
-<meta property="article:modified_time" content="2022-11-28T04:14:33.326Z">
+<meta property="og:image" content="http://example.com/2023/03/29/SNMP/image-20221104115032.png">
+<meta property="og:image" content="http://example.com/2023/03/29/SNMP/image-20221104112951.png">
+<meta property="og:image" content="http://example.com/2023/03/29/SNMP/image-20221128115648832.png">
+<meta property="og:image" content="http://example.com/2023/03/29/SNMP/image-20221128120303473.png">
+<meta property="og:image" content="http://example.com/2023/03/29/SNMP/image-20221128121136904.png">
+<meta property="article:published_time" content="2023-03-29T06:40:17.000Z">
+<meta property="article:modified_time" content="2023-03-30T11:52:18.789Z">
 <meta property="article:author" content="Cheng Chen">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://example.com/2022/11/04/SNMP/image-20221128113151437.png">
+<meta name="twitter:image" content="http://example.com/2023/03/29/SNMP/image-20221104115032.png">
 
 
-<link rel="canonical" href="http://example.com/2022/11/04/SNMP/">
+<link rel="canonical" href="http://example.com/2023/03/29/SNMP/">
 
 
 
-<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2022/11/04/SNMP/","path":"2022/11/04/SNMP/","title":"SNMP"}</script>
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/29/SNMP/","path":"2023/03/29/SNMP/","title":"SNMP"}</script>
 
 <script class="next-config" data-name="calendar" type="application/json">""</script>
 <title>SNMP | Cc's Blog</title>
@@ -137,7 +137,7 @@
   <nav class="site-state">
       <div class="site-state-item site-state-posts">
         <a href="/archives/">
-          <span class="site-state-item-count">13</span>
+          <span class="site-state-item-count">14</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
@@ -182,7 +182,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/11/04/SNMP/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/29/SNMP/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/apple-touch-icon.png">
@@ -211,14 +211,14 @@
       </span>
       <span class="post-meta-item-text">Posted on</span>
 
-      <time title="Created: 2022-11-04 14:40:17" itemprop="dateCreated datePublished" datetime="2022-11-04T14:40:17+08:00">2022-11-04</time>
+      <time title="Created: 2023-03-29 14:40:17" itemprop="dateCreated datePublished" datetime="2023-03-29T14:40:17+08:00">2023-03-29</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
         <i class="far fa-calendar-check"></i>
       </span>
       <span class="post-meta-item-text">Edited on</span>
-      <time title="Modified: 2022-11-28 12:14:33" itemprop="dateModified" datetime="2022-11-28T12:14:33+08:00">2022-11-28</time>
+      <time title="Modified: 2023-03-30 19:52:18" itemprop="dateModified" datetime="2023-03-30T19:52:18+08:00">2023-03-30</time>
     </span>
     <span class="post-meta-item">
       <span class="post-meta-item-icon">
@@ -241,7 +241,9 @@
     
     
     <div class="post-body" itemprop="articleBody">
-        <h1 id="1-SNMP简介"><a href="#1-SNMP简介" class="headerlink" title="1. SNMP简介"></a>1. SNMP简介</h1><p>SNMP(Simple Network Management Protocol, 简单网络管理协议)，用于网络设备的管理。<br>网络设备种类多种多样，不同设备厂商提供的管理接口（如命令行接口）各不相同，这使得网络管理变得愈发复杂。<br>为解决这一问题，SNMP应运而生。SNMP作为广泛应用于TCP/IP网络的网络管理标准协议，提供了统一的接口，从而实现了不同种类和厂商的网络设备之间的统一管理。</p>
+        <h1 id="1-SNMP简介"><a href="#1-SNMP简介" class="headerlink" title="1. SNMP简介"></a>1. SNMP简介</h1><p>SNMP(Simple Network Management Protocol, 简单网络管理协议)，用于网络设备的管理。</p>
+<p>网络设备种类多种多样，不同设备厂商提供的管理接口（如命令行接口）各不相同，这使得网络管理变得愈发复杂。</p>
+<p>为解决这一问题，SNMP应运而生。SNMP作为广泛应用的网络管理标准协议，提供了统一的接口，从而实现了不同种类和厂商的网络设备之间的统一管理。</p>
 <p><strong>SNMP的价值</strong></p>
 <ol>
 <li>网络管理员可以利用SNMP平台，对网络中的任意一台网络设备完成信息查询、配置修改和故障排查等工作，工作效率得以提高。</li>
@@ -253,10 +255,10 @@
 <ul>
 <li>网络管理系统NMS(Network Management System)</li>
 <li>代理进程(Agent)</li>
+<li>管理信息库MIB(Management Information Base)</li>
 <li>被管对象(Managed Object)</li>
-<li>管理信息库MIB(Management Information Base)。</li>
 </ul>
-<p>如图所示他们共同构成SNMP的管理模型。<br><img src="/2022/11/04/SNMP/image-20221128113151437.png" alt="image-20221104115032.png" style="zoom:50%;"></p>
+<p>如图所示他们共同构成SNMP的管理模型。<br><img src="/2023/03/29/SNMP/image-20221104115032.png" alt="image-20221104115032.png" style="zoom:50%;"></p>
 <p><strong>NMS</strong><br>NMS就是采用SNMP协议对网络设备进行管理/监视的系统，运行在NMS服务器上。NMS作为整个网络的网管中心，对设备进行管理。</p>
 <ul>
 <li>  NMS可以向设备上的Agent发出请求，查询或修改一个或多个具体的参数值。</li>
@@ -273,7 +275,7 @@
 <li>  Agent通过查询MIB，可以获知设备当前的状态信息。</li>
 <li>  Agent通过修改MIB，可以设置设备的状态参数。</li>
 </ul>
-<p>SNMP的MIB采用树型结构，它的根在最上面，根没有名字。如下图所示的是MIB的一部分，每个OID对应于树中的一个Managed Object。<br><img src="/2022/11/04/SNMP/image-20221104112951.png" alt="image-20221104112951.png" style="zoom:50%;"></p>
+<p>SNMP的MIB采用树型结构，它的根在最上面，根没有名字。如下图所示的是MIB的一部分，每个OID对应于树中的一个Managed Object。<br><img src="/2023/03/29/SNMP/image-20221104112951.png" alt="image-20221104112951.png" style="zoom:50%;"></p>
 <ul>
 <li>OID可以是数字标识符，如system的OID为1.3.6.1.2.1.1，interfaces的OID为1.3.6.1.2.1.2。</li>
 <li>OID可以是名称标识符，如”sysName”</li>
@@ -356,25 +358,25 @@
 <tr>
 <td align="left">Inform</td>
 <td align="left">InformRequest也是被管理设备向NMS主动发送告警。与Trap告警不同的是，被管理设备发送Inform告警后，需要NMS回复InformResponse来进行确认。</td>
-<td align="left">SNMPv1版本不支持GetBulk操作</td>
+<td align="left">SNMPv1版本不支持Inform操作</td>
 </tr>
 </tbody></table>
 <h2 id="5-1-SNMP查询"><a href="#5-1-SNMP查询" class="headerlink" title="5.1 SNMP查询"></a>5.1 SNMP查询</h2><p>操作类型为Get、GetNext和GetBulk</p>
-<img src="/2022/11/04/SNMP/image-20221128115648832.png" alt="image-20221104115032.png" style="zoom:50%;">
+<img src="/2023/03/29/SNMP/image-20221128115648832.png" alt="image-20221104115032.png" style="zoom:50%;">
 
 <ol>
 <li>NMS向SNMP Agent发送Get请求报文。请求报文PDU中PDU类型为Get类型，绑定变量填入MIB节点名sysContact。</li>
 <li>SNMP Agent首先对报文中携带的认证信息进行认证，认证成功后，SNMP Agent根据请求查询MIB中的sysContact节点，得到sysContact的值并将其封装到Response报文中的PDU，向NMS发送响应；如果查询不成功，SNMP Agent会向NMS发送出错响应。</li>
 </ol>
 <h2 id="5-2-SNMP设置"><a href="#5-2-SNMP设置" class="headerlink" title="5.2 SNMP设置"></a>5.2 SNMP设置</h2><p>操作类型为Set</p>
-<img src="/2022/11/04/SNMP/image-20221128120303473.png" alt="image-20221128120303473" style="zoom:50%;">
+<img src="/2023/03/29/SNMP/image-20221128120303473.png" alt="image-20221128120303473" style="zoom:50%;">
 
 <ol>
 <li>NMS向SNMP Agent发送Set请求报文，请求报文PDU类型为Set，绑定变量填入MIB节点名sysName和需要设置的值“Value”。</li>
 <li>SNMP Agent首先对报文中携带的认证信息进行认证，认证成功后，SNMP Agent根据请求设置管理变量在管理信息库MIB中对应的节点，设置成功后向NMS发送响应；如果设置不成功，Agent会向NMS发送出错响应。</li>
 </ol>
 <h2 id="5-3-SNMP通知"><a href="#5-3-SNMP通知" class="headerlink" title="5.3 SNMP通知"></a>5.3 SNMP通知</h2><p>操作类型为Trap和Inform</p>
-<img src="/2022/11/04/SNMP/image-20221128121136904.png" alt="image-20221128121136904" style="zoom:50%;">
+<img src="/2023/03/29/SNMP/image-20221128121136904.png" alt="image-20221128121136904" style="zoom:50%;">
 
 <p><strong>Trap</strong></p>
 <p>Trap不属于NMS对被管理设备的基本操作，它是被管理设备的自发行为。当被管理设备达到告警的触发条件时，会通过SNMP Agent向NMS发送Trap消息，告知设备侧出现的异常情况，便于网络管理人员及时处理。例如被管理设备热启动后，SNMP Agent会向NMS发送warmStart的Trap。</p>
@@ -400,13 +402,13 @@
 
           <div class="post-nav">
             <div class="post-nav-item">
-                <a href="/2022/11/03/SSH%E4%BB%8B%E7%BB%8D%E4%B8%8E%E4%BD%BF%E7%94%A8/" rel="prev" title="SSH介绍与使用">
-                  <i class="fa fa-chevron-left"></i> SSH介绍与使用
+                <a href="/2023/03/02/ICMP/" rel="prev" title="ICMP">
+                  <i class="fa fa-chevron-left"></i> ICMP
                 </a>
             </div>
             <div class="post-nav-item">
-                <a href="/2023/03/02/ICMP/" rel="next" title="ICMP">
-                  ICMP <i class="fa fa-chevron-right"></i>
+                <a href="/2023/03/30/%E7%BD%91%E7%BB%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B1%95/" rel="next" title="网络自动化发展">
+                  网络自动化发展 <i class="fa fa-chevron-right"></i>
                 </a>
             </div>
           </div>
