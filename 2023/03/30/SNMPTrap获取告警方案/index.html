@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+<meta name="theme-color" content="#222"><meta name="generator" content="Hexo 5.4.2">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png">
+  <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha256-DfWjNxDkM94fVBWx1H5BMMp0Zq7luBlV8QRcSES7s+0=" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.1.1/animate.min.css" integrity="sha256-PR7ttpcvz8qrF57fur/yAx1qXMFJeJFiA6pSzWi0OIE=" crossorigin="anonymous">
+
+<script class="next-config" data-name="main" type="application/json">{"hostname":"example.com","root":"/","images":"/images","scheme":"Gemini","darkmode":false,"version":"8.12.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":{"enable":false,"style":null},"bookmark":{"enable":false,"color":"#222","save":"auto"},"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"stickytabs":false,"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"Searching...","empty":"We didn't find any results for the search: ${query}","hits_time":"${hits} results found in ${time} ms","hits":"${hits} results found"}}</script><script src="/js/config.js"></script>
+
+    <meta name="description" content="概述：SNMPTrapd接受trap报文并结构化方案">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SNMPTrap获取告警解决方案">
+<meta property="og:url" content="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/index.html">
+<meta property="og:site_name" content="Cc&#39;s Blog">
+<meta property="og:description" content="概述：SNMPTrapd接受trap报文并结构化方案">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/image-20230330200529.png">
+<meta property="og:image" content="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/image-20230330203846.png">
+<meta property="article:published_time" content="2023-03-30T13:26:14.000Z">
+<meta property="article:modified_time" content="2023-03-30T13:31:51.590Z">
+<meta property="article:author" content="Cheng Chen">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/image-20230330200529.png">
+
+
+<link rel="canonical" href="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/">
+
+
+
+<script class="next-config" data-name="page" type="application/json">{"sidebar":"","isHome":false,"isPost":true,"lang":"en","comments":true,"permalink":"http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/","path":"2023/03/30/SNMPTrap获取告警方案/","title":"SNMPTrap获取告警解决方案"}</script>
+
+<script class="next-config" data-name="calendar" type="application/json">""</script>
+<title>SNMPTrap获取告警解决方案 | Cc's Blog</title>
+  
+
+
+
+
+
+  <noscript>
+    <link rel="stylesheet" href="/css/noscript.css">
+  </noscript>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <p class="site-title">Cc's Blog</p>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">Stay Simple</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>Categories</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#1-SNMP-Trap%E9%80%9A%E4%BF%A1%E6%A8%A1%E5%9E%8B"><span class="nav-text">1. SNMP-Trap通信模型</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#2-SNMP-Trap%E7%9A%84%E4%BC%98%E5%8A%BF"><span class="nav-text">2. SNMP-Trap的优势</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#3-WiFi%E5%B9%B3%E5%8F%B0%E9%80%9A%E8%BF%87SNMP-Trap%E8%8E%B7%E5%8F%96AP%E4%BA%8B%E4%BB%B6%E5%91%8A%E8%AD%A6%E7%9A%84%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88"><span class="nav-text">3. WiFi平台通过SNMP-Trap获取AP事件告警的解决方案</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#4-WiFi%E5%B9%B3%E5%8F%B0%E9%83%A8%E7%BD%B2%E6%AD%A5%E9%AA%A4"><span class="nav-text">4. WiFi平台部署步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#4-1-SNMPTRAP%E9%85%8D%E7%BD%AE"><span class="nav-text">4.1 SNMPTRAP配置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-1-%E5%AE%89%E8%A3%85snmptrapd%E6%9C%8D%E5%8A%A1"><span class="nav-text">4.1.1 安装snmptrapd服务</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-2-%E7%BC%96%E8%BE%91%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6-etc-snmp-snmptrapd-conf"><span class="nav-text">4.1.2 编辑配置文件&#x2F;etc&#x2F;snmp&#x2F;snmptrapd.conf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-1-3-%E5%90%AF%E5%8A%A8%E5%B9%B6%E9%85%8D%E7%BD%AE%E5%BC%80%E6%9C%BA%E8%87%AA%E5%90%AF%E5%8A%A8"><span class="nav-text">4.1.3 启动并配置开机自启动</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-2-%E5%AF%BC%E5%85%A5mib%E5%BA%93"><span class="nav-text">4.2 导入mib库</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-1-%E5%A4%8D%E5%88%B6Meraki-NCE-mib%E6%96%87%E4%BB%B6%E5%88%B0-usr-share-snmp-mibs-%E7%9B%AE%E5%BD%95%E4%B8%8B"><span class="nav-text">4.2.1  复制Meraki&#x2F;NCE mib文件到&#x2F;usr&#x2F;share&#x2F;snmp&#x2F;mibs&#x2F;目录下</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-2-2-%E4%BF%AE%E6%94%B9net-snmp%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E5%8A%A0%E8%BD%BD%E5%8E%82%E5%95%86mib%E6%96%87%E4%BB%B6"><span class="nav-text">4.2.2 修改net-snmp配置文件加载厂商mib文件</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-3-%E9%80%9A%E8%BF%87zabbix-trap-receiver-pl%E8%84%9A%E6%9C%AC%E7%BB%93%E6%9E%84%E5%8C%96trap%E6%8A%A5%E6%96%87"><span class="nav-text">4.3 通过zabbix_trap_receiver.pl脚本结构化trap报文</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-1-%E4%B8%8B%E8%BD%BDzabbix%E8%BD%AF%E4%BB%B6%E5%8C%85"><span class="nav-text">4.3.1 下载zabbix软件包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-2-%E5%A4%8D%E5%88%B6pl%E8%84%9A%E6%9C%AC%E5%88%B0%E6%8C%87%E5%AE%9A%E7%9B%AE%E5%BD%95"><span class="nav-text">4.3.2 复制pl脚本到指定目录</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-3-3-%E6%9F%A5%E7%9C%8Btrap%E5%91%8A%E8%AD%A6%E6%8A%A5%E6%96%87"><span class="nav-text">4.3.3 查看trap告警报文</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Cheng Chen"
+      src="/images/apple-touch-icon.png">
+  <p class="site-author-name" itemprop="name">Cheng Chen</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+        <a href="/archives/">
+          <span class="site-state-item-count">15</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+          <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">categories</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button" aria-label="Back to top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/apple-touch-icon.png">
+      <meta itemprop="name" content="Cheng Chen">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Cc's Blog">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="post" itemscope itemtype="http://schema.org/CreativeWork">
+      <meta itemprop="name" content="SNMPTrap获取告警解决方案 | Cc's Blog">
+      <meta itemprop="description" content="概述：SNMPTrapd接受trap报文并结构化方案">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          SNMPTrap获取告警解决方案
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">Posted on</span>
+      
+
+      <time title="Created: 2023-03-30 21:26:14 / Modified: 21:31:51" itemprop="dateCreated datePublished" datetime="2023-03-30T21:26:14+08:00">2023-03-30</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">In</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Networking/" itemprop="url" rel="index"><span itemprop="name">Networking</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+            <div class="post-description">概述：SNMPTrapd接受trap报文并结构化方案</div>
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h1 id="1-SNMP-Trap通信模型"><a href="#1-SNMP-Trap通信模型" class="headerlink" title="1. SNMP-Trap通信模型"></a>1. SNMP-Trap通信模型</h1><img src="/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/image-20230330200529.png" alt="image-1" style="zoom: 25%;">
+
+<p>SNMP-Trap管理设备的自发行为。当被<strong>管理设备</strong>达到告警的触发条件时，会通过SNMP Agent向<strong>NMS</strong>主动发送Trap消息，告知设备侧出现的异常情况，便于网络管理人员及时处理。</p>
+<p>比如被管理设备热重启后，SNMP Agent会<strong>主动</strong>向NMS发送类型为warmStart的Trap，来通知NMS我这台设备热重启了。（稍后实测）</p>
+<hr>
+<h1 id="2-SNMP-Trap的优势"><a href="#2-SNMP-Trap的优势" class="headerlink" title="2. SNMP-Trap的优势"></a>2. SNMP-Trap的优势</h1><ol>
+<li>SNMP-Trap的资源占用极小</li>
+<li>SNMP-Trap这种方法主动上报的通信模型，在设备端的模块达到模块预定义的告警触发条件时，SNMP Agent主动向管理进程报告，<strong>即时性强</strong></li>
+<li>SNMP-Trap基于UDP实现，不需要响应，<strong>最小化管理流量</strong></li>
+</ol>
+<hr>
+<h1 id="3-WiFi平台通过SNMP-Trap获取AP事件告警的解决方案"><a href="#3-WiFi平台通过SNMP-Trap获取AP事件告警的解决方案" class="headerlink" title="3. WiFi平台通过SNMP-Trap获取AP事件告警的解决方案"></a>3. WiFi平台通过SNMP-Trap获取AP事件告警的解决方案</h1><p><strong>解决方案中SNMP-Trap模型角色定义：</strong><br><strong>NMS：</strong> WiFi平台<br><strong>SNMP Agent</strong>： Meraki控制器、NCE-Campus控制器</p>
+<p><strong>解决方案架构</strong>：</p>
+<p><img src="/2023/03/30/SNMPTrap%E8%8E%B7%E5%8F%96%E5%91%8A%E8%AD%A6%E6%96%B9%E6%A1%88/image-20230330203846.png" alt="image-2"></p>
+<hr>
+<h1 id="4-WiFi平台部署步骤"><a href="#4-WiFi平台部署步骤" class="headerlink" title="4. WiFi平台部署步骤"></a>4. <strong>WiFi平台部署步骤</strong></h1><h2 id="4-1-SNMPTRAP配置"><a href="#4-1-SNMPTRAP配置" class="headerlink" title="4.1 SNMPTRAP配置"></a>4.1 SNMPTRAP配置</h2><h3 id="4-1-1-安装snmptrapd服务"><a href="#4-1-1-安装snmptrapd服务" class="headerlink" title="4.1.1 安装snmptrapd服务"></a>4.1.1 安装snmptrapd服务</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">yum install net-snmp net-snmp-utils net-snmp-perl</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-2-编辑配置文件-etc-snmp-snmptrapd-conf"><a href="#4-1-2-编辑配置文件-etc-snmp-snmptrapd-conf" class="headerlink" title="4.1.2 编辑配置文件/etc/snmp/snmptrapd.conf"></a>4.1.2 编辑配置文件/etc/snmp/snmptrapd.conf</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">authCommunity   <span class="built_in">log</span>,execute,net SNMPcctest             <span class="comment">#&quot;SNMPcctest&quot;为团体字  </span></span><br><span class="line">perl <span class="keyword">do</span> <span class="string">&quot;/home/cctest/zabbix_trap_receiver.pl&quot;</span>;        <span class="comment">#配置snmptrapd自动调用pl脚本</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="4-1-3-启动并配置开机自启动"><a href="#4-1-3-启动并配置开机自启动" class="headerlink" title="4.1.3 启动并配置开机自启动"></a>4.1.3 启动并配置开机自启动</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl start snmptrapd  </span><br><span class="line">systemctl enable snmptrapd</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-2-导入mib库"><a href="#4-2-导入mib库" class="headerlink" title="4.2 导入mib库"></a>4.2 导入mib库</h2><h3 id="4-2-1-复制Meraki-NCE-mib文件到-usr-share-snmp-mibs-目录下"><a href="#4-2-1-复制Meraki-NCE-mib文件到-usr-share-snmp-mibs-目录下" class="headerlink" title="4.2.1  复制Meraki/NCE mib文件到/usr/share/snmp/mibs/目录下"></a>4.2.1  复制Meraki/NCE mib文件到/usr/share/snmp/mibs/目录下</h3><h3 id="4-2-2-修改net-snmp配置文件加载厂商mib文件"><a href="#4-2-2-修改net-snmp配置文件加载厂商mib文件" class="headerlink" title="4.2.2 修改net-snmp配置文件加载厂商mib文件"></a>4.2.2 修改net-snmp配置文件加载厂商mib文件</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">vim /usr/share/snmp/snmp.conf</span><br><span class="line"></span><br><span class="line">mibs +ALL       //加载所有mib文件</span><br></pre></td></tr></table></figure>
+
+
+
+<h2 id="4-3-通过zabbix-trap-receiver-pl脚本结构化trap报文"><a href="#4-3-通过zabbix-trap-receiver-pl脚本结构化trap报文" class="headerlink" title="4.3 通过zabbix_trap_receiver.pl脚本结构化trap报文"></a>4.3 通过zabbix_trap_receiver.pl脚本结构化trap报文</h2><h3 id="4-3-1-下载zabbix软件包"><a href="#4-3-1-下载zabbix软件包" class="headerlink" title="4.3.1 下载zabbix软件包"></a>4.3.1 下载zabbix软件包</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">wget https://cdn.zabbix.com/zabbix/sources/stable/6.4/zabbix-6.4.0.tar.gz</span><br><span class="line">tar -zxvf zabbix-6.4.0.tar.gz </span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-2-复制pl脚本到指定目录"><a href="#4-3-2-复制pl脚本到指定目录" class="headerlink" title="4.3.2 复制pl脚本到指定目录"></a>4.3.2 复制pl脚本到指定目录</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cp zabbix-6.4.0/misc/snmptrap/zabbix_trap_receiver.pl /home/cctest/zabbix_trap_receiver.pl</span><br><span class="line"></span><br><span class="line">chmod +x /home/cctest/zabbix_trap_receiver.pl</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-3-3-查看trap告警报文"><a href="#4-3-3-查看trap告警报文" class="headerlink" title="4.3.3 查看trap告警报文"></a>4.3.3 查看trap告警报文</h3><pre><code>vim /tmp/zabbix_traps.tmp
+</code></pre>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2023/03/30/%E7%BD%91%E7%BB%9C%E8%87%AA%E5%8A%A8%E5%8C%96%E5%8F%91%E5%B1%95/" rel="prev" title="网络自动化发展">
+                  <i class="fa fa-chevron-left"></i> 网络自动化发展
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2023</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Cheng Chen</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/" rel="noopener" target="_blank">NexT.Gemini</a>
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js" integrity="sha256-XL2inqUJaslATFnHdJOi9GfQ60on8Wx1C2H8DYiN1xY=" crossorigin="anonymous"></script>
+<script src="/js/comments.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
